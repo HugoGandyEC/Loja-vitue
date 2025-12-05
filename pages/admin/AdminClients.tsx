@@ -176,13 +176,13 @@ const AdminClients: React.FC = () => {
         {/* Search & List */}
         <div className="p-6">
           <div className="relative mb-6">
-             <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+             <Search className="absolute left-3 top-2.5 text-gray-500 w-5 h-5" />
              <input 
                type="text" 
                placeholder={`Buscar ${activeTab}...`} 
                value={searchTerm}
                onChange={(e) => setSearchTerm(e.target.value)}
-               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+               className="w-full pl-10 pr-4 py-2 bg-gray-50 text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
              />
           </div>
 
@@ -252,7 +252,7 @@ const AdminClients: React.FC = () => {
             {/* Common Fields: ID */}
             <div className="md:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">ID</label>
-              <input type="text" disabled value={formData.id} className="w-full bg-gray-100 border border-gray-300 rounded-md px-3 py-2 text-sm" />
+              <input type="text" disabled value={formData.id} className="w-full bg-gray-200 text-gray-500 border border-gray-300 rounded-md px-3 py-2 text-sm cursor-not-allowed" />
             </div>
 
             {/* Conditional Fields based on Tab */}
@@ -260,15 +260,15 @@ const AdminClients: React.FC = () => {
               <>
                 <div className="md:col-span-3">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
-                  <input type="text" value={formData.name} onChange={e => handleInputChange('name', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+                  <input type="text" value={formData.name} onChange={e => handleInputChange('name', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
                 </div>
                 <div className="md:col-span-1">
                   <label className="block text-sm font-medium text-gray-700 mb-1">CPF</label>
-                  <input type="text" value={formData.cpf} onChange={e => handleInputChange('cpf', e.target.value)} placeholder="000.000.000-00" className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+                  <input type="text" value={formData.cpf} onChange={e => handleInputChange('cpf', e.target.value)} placeholder="000.000.000-00" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
                 </div>
                 <div className="md:col-span-1">
                   <label className="block text-sm font-medium text-gray-700 mb-1">RG</label>
-                  <input type="text" value={formData.rg} onChange={e => handleInputChange('rg', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+                  <input type="text" value={formData.rg} onChange={e => handleInputChange('rg', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
                 </div>
               </>
             ) : (
@@ -282,7 +282,7 @@ const AdminClients: React.FC = () => {
                       value={formData.cnpj}
                       onChange={e => handleInputChange('cnpj', e.target.value)}
                       onBlur={(e) => fetchCnpj(e.target.value)}
-                      className="w-full border border-gray-300 rounded-md pl-3 pr-8 py-2 focus:ring-blue-500 focus:border-blue-500" 
+                      className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md pl-3 pr-8 py-2 focus:ring-blue-500 focus:border-blue-500" 
                     />
                     {loadingCnpj && <div className="absolute right-2 top-2.5 w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>}
                   </div>
@@ -293,12 +293,12 @@ const AdminClients: React.FC = () => {
                     type="text" 
                     value={formData.corporateName} 
                     onChange={e => handleInputChange('corporateName', e.target.value)}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
+                    className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
                   />
                 </div>
                 <div className="md:col-span-1">
                   <label className="block text-sm font-medium text-gray-700 mb-1">Inscrição Estadual</label>
-                  <input type="text" value={formData.inscription} onChange={e => handleInputChange('inscription', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+                  <input type="text" value={formData.inscription} onChange={e => handleInputChange('inscription', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
                 </div>
               </>
             )}
@@ -309,7 +309,7 @@ const AdminClients: React.FC = () => {
                 type="email" 
                 value={formData.email} 
                 onChange={e => handleInputChange('email', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
+                className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
               />
             </div>
             <div className="md:col-span-2">
@@ -318,7 +318,7 @@ const AdminClients: React.FC = () => {
                 type="text" 
                 value={formData.contact} 
                 onChange={e => handleInputChange('contact', e.target.value)}
-                className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
+                className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
               />
             </div>
 
@@ -336,7 +336,7 @@ const AdminClients: React.FC = () => {
                   onChange={e => handleAddressChange('zipCode', e.target.value)}
                   onBlur={e => fetchCep(e.target.value)}
                   placeholder="00000-000"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
+                  className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
                 />
                 {loadingCep && <div className="absolute right-3 top-2.5 w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>}
               </div>
@@ -344,32 +344,32 @@ const AdminClients: React.FC = () => {
 
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-1">Logradouro / Endereço</label>
-              <input type="text" value={formData.address.street} onChange={e => handleAddressChange('street', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+              <input type="text" value={formData.address.street} onChange={e => handleAddressChange('street', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
             </div>
 
             <div className="md:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">Número</label>
-              <input type="text" value={formData.address.number} onChange={e => handleAddressChange('number', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+              <input type="text" value={formData.address.number} onChange={e => handleAddressChange('number', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
             </div>
 
             <div className="md:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">Bairro</label>
-              <input type="text" value={formData.address.district} onChange={e => handleAddressChange('district', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+              <input type="text" value={formData.address.district} onChange={e => handleAddressChange('district', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
             </div>
 
             <div className="md:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">Complemento</label>
-              <input type="text" value={formData.address.complement} onChange={e => handleAddressChange('complement', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+              <input type="text" value={formData.address.complement} onChange={e => handleAddressChange('complement', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
             </div>
 
             <div className="md:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">Cidade</label>
-              <input type="text" value={formData.address.city} onChange={e => handleAddressChange('city', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+              <input type="text" value={formData.address.city} onChange={e => handleAddressChange('city', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
             </div>
 
              <div className="md:col-span-1">
               <label className="block text-sm font-medium text-gray-700 mb-1">UF</label>
-              <input type="text" value={formData.address.state} onChange={e => handleAddressChange('state', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+              <input type="text" value={formData.address.state} onChange={e => handleAddressChange('state', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
             </div>
 
             {/* Supplier Specific: Seller Info */}
@@ -380,15 +380,15 @@ const AdminClients: React.FC = () => {
                  </div>
                  <div className="md:col-span-2">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Nome do Vendedor</label>
-                    <input type="text" value={formData.sellerName} onChange={e => handleInputChange('sellerName', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+                    <input type="text" value={formData.sellerName} onChange={e => handleInputChange('sellerName', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
                  </div>
                  <div className="md:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                    <input type="email" value={formData.sellerEmail} onChange={e => handleInputChange('sellerEmail', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+                    <input type="email" value={formData.sellerEmail} onChange={e => handleInputChange('sellerEmail', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
                  </div>
                  <div className="md:col-span-1">
                     <label className="block text-sm font-medium text-gray-700 mb-1">Contato</label>
-                    <input type="text" value={formData.sellerContact} onChange={e => handleInputChange('sellerContact', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
+                    <input type="text" value={formData.sellerContact} onChange={e => handleInputChange('sellerContact', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" />
                  </div>
               </>
             )}

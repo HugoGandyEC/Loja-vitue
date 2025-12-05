@@ -509,15 +509,15 @@ const AdminCatalog: React.FC = () => {
             <form className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Código de Barras</label>
-                 <input type="text" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.barcode} onChange={e => setProductForm({...productForm, barcode: e.target.value})} />
+                 <input type="text" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={productForm.barcode} onChange={e => setProductForm({...productForm, barcode: e.target.value})} />
               </div>
               <div className="md:col-span-2">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Descrição do Produto</label>
-                 <input type="text" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.name} onChange={e => setProductForm({...productForm, name: e.target.value})} />
+                 <input type="text" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={productForm.name} onChange={e => setProductForm({...productForm, name: e.target.value})} />
               </div>
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">NCM</label>
-                 <input type="text" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.ncm} onChange={e => setProductForm({...productForm, ncm: e.target.value})} />
+                 <input type="text" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={productForm.ncm} onChange={e => setProductForm({...productForm, ncm: e.target.value})} />
               </div>
 
               {/* INTEGRATED BRAND SELECT */}
@@ -526,7 +526,7 @@ const AdminCatalog: React.FC = () => {
                  <select 
                    value={productForm.brandId}
                    onChange={(e) => setProductForm({...productForm, brandId: e.target.value})}
-                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                   className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
                  >
                    <option value="">Selecione...</option>
                    {brands.map(brand => (
@@ -541,7 +541,7 @@ const AdminCatalog: React.FC = () => {
                  <select 
                     value={productForm.categoryId}
                     onChange={(e) => setProductForm({ ...productForm, categoryId: e.target.value, subCategoryId: '' })}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
                   >
                    <option value="">Selecione...</option>
                    {categories.map(cat => (
@@ -555,7 +555,7 @@ const AdminCatalog: React.FC = () => {
                     value={productForm.subCategoryId}
                     onChange={(e) => setProductForm({ ...productForm, subCategoryId: e.target.value })}
                     disabled={!productForm.categoryId}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 disabled:bg-gray-100 disabled:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 disabled:bg-gray-200 disabled:text-gray-400 focus:ring-blue-500 focus:border-blue-500"
                   >
                    <option value="">{productForm.categoryId ? 'Selecione...' : 'Selecione a Categoria primeiro'}</option>
                    {availableSubCategories.map(sub => (
@@ -566,7 +566,7 @@ const AdminCatalog: React.FC = () => {
 
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Unidade</label>
-                 <select className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.unit} onChange={e => setProductForm({...productForm, unit: e.target.value})}>
+                 <select className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={productForm.unit} onChange={e => setProductForm({...productForm, unit: e.target.value})}>
                    <option value="un">UN</option>
                    <option value="kg">KG</option>
                    <option value="cx">CX</option>
@@ -576,15 +576,15 @@ const AdminCatalog: React.FC = () => {
               {/* MODEL, SERIAL NUMBER, STOCK */}
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Modelo</label>
-                 <input type="text" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.model} onChange={e => setProductForm({...productForm, model: e.target.value})} />
+                 <input type="text" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={productForm.model} onChange={e => setProductForm({...productForm, model: e.target.value})} />
               </div>
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Número de Série</label>
-                 <input type="text" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.serialNumber} onChange={e => setProductForm({...productForm, serialNumber: e.target.value})} />
+                 <input type="text" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={productForm.serialNumber} onChange={e => setProductForm({...productForm, serialNumber: e.target.value})} />
               </div>
               <div className="md:col-span-2">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Estoque Inicial (Quantidade)</label>
-                 <input type="number" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.stock} onChange={e => setProductForm({...productForm, stock: parseInt(e.target.value) || 0})} />
+                 <input type="number" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={productForm.stock} onChange={e => setProductForm({...productForm, stock: parseInt(e.target.value) || 0})} />
               </div>
 
               {/* PRODUCT IMAGES GALLERY */}
@@ -632,20 +632,20 @@ const AdminCatalog: React.FC = () => {
               </div>
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Preço Custo</label>
-                 <input type="number" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.purchasePrice} onChange={e => setProductForm({...productForm, purchasePrice: parseFloat(e.target.value)})} />
+                 <input type="number" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={productForm.purchasePrice} onChange={e => setProductForm({...productForm, purchasePrice: parseFloat(e.target.value)})} />
               </div>
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Margem %</label>
-                 <input type="number" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.margin} onChange={e => setProductForm({...productForm, margin: parseFloat(e.target.value)})} />
+                 <input type="number" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={productForm.margin} onChange={e => setProductForm({...productForm, margin: parseFloat(e.target.value)})} />
               </div>
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Venda Varejo</label>
-                 <input type="number" className="w-full border border-blue-300 bg-blue-50 rounded-md px-3 py-2" value={productForm.retailPrice} onChange={e => setProductForm({...productForm, retailPrice: parseFloat(e.target.value)})} />
+                 <input type="number" className="w-full border border-blue-300 bg-blue-50 text-blue-900 rounded-md px-3 py-2 font-semibold" value={productForm.retailPrice} onChange={e => setProductForm({...productForm, retailPrice: parseFloat(e.target.value)})} />
               </div>
               
                <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Exibir na Loja?</label>
-                 <select className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.showInStore} onChange={e => setProductForm({...productForm, showInStore: e.target.value})}>
+                 <select className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={productForm.showInStore} onChange={e => setProductForm({...productForm, showInStore: e.target.value})}>
                    <option value="yes">Sim</option>
                    <option value="no">Não</option>
                  </select>
@@ -663,15 +663,15 @@ const AdminCatalog: React.FC = () => {
              <form className="grid grid-cols-1 md:grid-cols-4 gap-6">
                <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Código</label>
-                 <input type="text" className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                 <input type="text" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
                </div>
                <div className="md:col-span-3">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Descrição do Serviço</label>
-                 <input type="text" className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                 <input type="text" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
                </div>
                <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Preço Venda</label>
-                 <input type="number" className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                 <input type="number" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
                </div>
                 <div className="md:col-span-4 flex justify-end gap-3 pt-4 border-t border-gray-100">
                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 border rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -685,11 +685,11 @@ const AdminCatalog: React.FC = () => {
            <form className="space-y-4">
                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Nome da Marca</label>
-                  <input type="text" value={brandForm.name} onChange={e => setBrandForm({...brandForm, name: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                  <input type="text" value={brandForm.name} onChange={e => setBrandForm({...brandForm, name: e.target.value})} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
                </div>
                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">URL do Logo</label>
-                  <input type="text" value={brandForm.logo} onChange={e => setBrandForm({...brandForm, logo: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                  <input type="text" value={brandForm.logo} onChange={e => setBrandForm({...brandForm, logo: e.target.value})} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
                </div>
                <div className="flex justify-end gap-3 pt-4">
                   <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 border rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -703,7 +703,7 @@ const AdminCatalog: React.FC = () => {
             <form className="space-y-4">
                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Nome da Categoria</label>
-                  <input type="text" value={categoryForm.name} onChange={e => setCategoryForm({...categoryForm, name: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                  <input type="text" value={categoryForm.name} onChange={e => setCategoryForm({...categoryForm, name: e.target.value})} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
                </div>
                <div className="flex justify-end gap-3 pt-4">
                   <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 border rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -720,7 +720,7 @@ const AdminCatalog: React.FC = () => {
                  <select 
                     value={subCategoryForm.parentId}
                     onChange={(e) => setSubCategoryForm({...subCategoryForm, parentId: e.target.value})}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2"
+                    className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2"
                  >
                    <option value="">Selecione...</option>
                    {categories.map(c => (
@@ -730,7 +730,7 @@ const AdminCatalog: React.FC = () => {
                </div>
                <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Nome da Sub-Categoria</label>
-                  <input type="text" value={subCategoryForm.name} onChange={e => setSubCategoryForm({...subCategoryForm, name: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                  <input type="text" value={subCategoryForm.name} onChange={e => setSubCategoryForm({...subCategoryForm, name: e.target.value})} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
                </div>
                <div className="flex justify-end gap-3 pt-4">
                   <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 border rounded-lg hover:bg-gray-50">Cancelar</button>
@@ -750,7 +750,7 @@ const AdminCatalog: React.FC = () => {
                    value={checklistForm.name}
                    onChange={e => setChecklistForm({...checklistForm, name: e.target.value})}
                    placeholder="Ex: Instalação de Câmera IP"
-                   className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
+                   className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
                  />
                </div>
                <div className="col-span-2 md:col-span-1">
@@ -758,7 +758,7 @@ const AdminCatalog: React.FC = () => {
                  <select 
                     value={checklistForm.relatedServiceId}
                     onChange={e => setChecklistForm({...checklistForm, relatedServiceId: e.target.value})}
-                    className="w-full border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
                  >
                    <option value="">Nenhum vínculo (Genérico)</option>
                    {services.map(s => (
@@ -772,7 +772,7 @@ const AdminCatalog: React.FC = () => {
                    rows={2}
                    value={checklistForm.description}
                    onChange={e => setChecklistForm({...checklistForm, description: e.target.value})}
-                   className="w-full border border-gray-300 rounded-md px-3 py-2"
+                   className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2"
                  ></textarea>
                </div>
              </div>
@@ -806,14 +806,14 @@ const AdminCatalog: React.FC = () => {
                               placeholder="O que deve ser verificado?"
                               value={item.label}
                               onChange={e => updateChecklistItem(index, 'label', e.target.value)}
-                              className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm"
+                              className="w-full bg-white text-gray-900 border border-gray-300 rounded px-2 py-1.5 text-sm"
                             />
                          </div>
                          <div className="md:col-span-4">
                             <select 
                               value={item.type}
                               onChange={e => updateChecklistItem(index, 'type', e.target.value)}
-                              className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm"
+                              className="w-full bg-white text-gray-900 border border-gray-300 rounded px-2 py-1.5 text-sm"
                             >
                               <option value="checkbox">☑️ Caixa de Seleção</option>
                               <option value="text">📝 Campo de Texto</option>

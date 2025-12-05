@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Save, Plus, Search, Trash2, Edit } from 'lucide-react';
 import Modal from '../../components/Modal';
@@ -186,22 +187,22 @@ const AdminTeam: React.FC = () => {
            <form className="grid grid-cols-1 md:grid-cols-4 gap-6">
               <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-1">ID</label>
-                <input type="text" disabled value="AUTO" className="w-full bg-gray-100 border border-gray-300 rounded-md px-3 py-2" />
+                <input type="text" disabled value="AUTO" className="w-full bg-gray-200 text-gray-500 border border-gray-300 rounded-md px-3 py-2 cursor-not-allowed" />
               </div>
 
               {activeTab === 'usuarios' ? (
                 <>
                    <div className="md:col-span-3">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Nome Completo</label>
-                      <input type="text" className="w-full border border-gray-300 rounded-md px-3 py-2" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+                      <input type="text" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
                    </div>
                    <div className="md:col-span-2">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                      <input type="email" className="w-full border border-gray-300 rounded-md px-3 py-2" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+                      <input type="email" className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
                    </div>
                    <div className="md:col-span-1">
                       <label className="block text-sm font-medium text-gray-700 mb-1">Cargo</label>
-                      <select className="w-full border border-gray-300 rounded-md px-3 py-2">
+                      <select className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2">
                         <option>Administrador</option>
                         <option>Vendedor</option>
                         <option>Estoquista</option>
@@ -213,17 +214,17 @@ const AdminTeam: React.FC = () => {
                   <div className="md:col-span-1 relative">
                     <label className="block text-sm font-medium text-gray-700 mb-1">CNPJ</label>
                     <div className="relative">
-                      <input type="text" onBlur={e => fetchCnpj(e.target.value)} className="w-full border border-gray-300 rounded-md pl-3 pr-8 py-2" />
+                      <input type="text" onBlur={e => fetchCnpj(e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md pl-3 pr-8 py-2" />
                        {loadingCnpj && <div className="absolute right-2 top-2.5 w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>}
                     </div>
                   </div>
                   <div className="md:col-span-2">
                      <label className="block text-sm font-medium text-gray-700 mb-1">Razão Social</label>
-                     <input type="text" value={formData.corporateName} onChange={e => setFormData({...formData, corporateName: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                     <input type="text" value={formData.corporateName} onChange={e => setFormData({...formData, corporateName: e.target.value})} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
                   </div>
                   <div className="md:col-span-2">
                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                     <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                     <input type="email" value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
                   </div>
                 </>
               )}
@@ -236,17 +237,17 @@ const AdminTeam: React.FC = () => {
                <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-1">CEP</label>
                 <div className="relative">
-                  <input type="text" value={formData.address.zipCode} onChange={e => handleAddressChange('zipCode', e.target.value)} onBlur={e => fetchCep(e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                  <input type="text" value={formData.address.zipCode} onChange={e => handleAddressChange('zipCode', e.target.value)} onBlur={e => fetchCep(e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
                   {loadingCep && <div className="absolute right-3 top-2.5 w-4 h-4 border-2 border-blue-600 border-t-transparent rounded-full animate-spin"></div>}
                 </div>
               </div>
               <div className="md:col-span-2">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Endereço</label>
-                <input type="text" value={formData.address.street} onChange={e => handleAddressChange('street', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                <input type="text" value={formData.address.street} onChange={e => handleAddressChange('street', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
               </div>
               <div className="md:col-span-1">
                 <label className="block text-sm font-medium text-gray-700 mb-1">Cidade</label>
-                <input type="text" value={formData.address.city} onChange={e => handleAddressChange('city', e.target.value)} className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                <input type="text" value={formData.address.city} onChange={e => handleAddressChange('city', e.target.value)} className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2" />
               </div>
 
               <div className="md:col-span-4 flex justify-end gap-3 pt-6 border-t border-gray-100">
