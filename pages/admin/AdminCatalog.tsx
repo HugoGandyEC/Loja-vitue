@@ -95,7 +95,8 @@ const AdminCatalog: React.FC = () => {
            margin: item.margin || 0,
            retailPrice: item.price || 0, // Map from main price
            wholesalePrice: item.wholesalePrice || 0,
-           showInStore: item.isActive ? 'yes' : 'no'
+           showInStore: item.isActive ? 'yes' : 'no',
+           stock: item.stock || 0
          });
       } else {
          // Reset
@@ -541,6 +542,20 @@ const AdminCatalog: React.FC = () => {
                    <option value="kg">KG</option>
                    <option value="cx">CX</option>
                  </select>
+              </div>
+
+              {/* MODEL, SERIAL NUMBER, STOCK */}
+              <div className="md:col-span-1">
+                 <label className="block text-sm font-medium text-gray-700 mb-1">Modelo</label>
+                 <input type="text" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.model} onChange={e => setProductForm({...productForm, model: e.target.value})} />
+              </div>
+              <div className="md:col-span-1">
+                 <label className="block text-sm font-medium text-gray-700 mb-1">Número de Série</label>
+                 <input type="text" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.serialNumber} onChange={e => setProductForm({...productForm, serialNumber: e.target.value})} />
+              </div>
+              <div className="md:col-span-2">
+                 <label className="block text-sm font-medium text-gray-700 mb-1">Estoque Inicial (Quantidade)</label>
+                 <input type="number" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.stock} onChange={e => setProductForm({...productForm, stock: parseInt(e.target.value) || 0})} />
               </div>
 
               <div className="md:col-span-4 border-t border-gray-100 pt-4">
