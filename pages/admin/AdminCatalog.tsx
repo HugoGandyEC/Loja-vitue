@@ -1,18 +1,24 @@
 
 import React, { useState } from 'react';
-import { Save, Plus, Search, Trash2, Edit, Image as ImageIcon, CheckSquare, Camera, FileText, Paperclip, GripVertical } from 'lucide-react';
+import { Save, Plus, Search, Trash2, Edit, Image as ImageIcon, CheckSquare, Camera, FileText, Paperclip, GripVertical, Copy, Power, Eye } from 'lucide-react';
 import { CATEGORIES, BRANDS, PRODUCTS } from '../../data/mockData';
 import { Category, Brand, Product, ChecklistTemplate, ChecklistItem } from '../../types';
 import Modal from '../../components/Modal';
 
 type CatalogTab = 'produtos' | 'servicos' | 'marcas' | 'categorias' | 'subcategorias' | 'contrato' | 'checklist' | 'financeiro';
 
+// Extend Product type locally for the UI state to handle "Active/Inactive" simulation
+interface UiProduct extends Product {
+  isActive?: boolean;
+}
+
 const AdminCatalog: React.FC = () => {
   const [activeTab, setActiveTab] = useState<CatalogTab>('produtos');
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   // States for Lists
-  const [products, setProducts] = useState<Product[]>(PRODUCTS);
+  // Initialize products with an isActive flag for demonstration
+  const [products, setProducts] = useState<UiProduct[]>(PRODUCTS.map(p => ({ ...p, isActive: true })));
   const [categories, setCategories] = useState<Category[]>(CATEGORIES);
   const [brands, setBrands] = useState<Brand[]>(BRANDS);
   
@@ -47,8 +53,7 @@ const AdminCatalog: React.FC = () => {
   const [brandForm, setBrandForm] = useState({ name: '', logo: '' });
   const [categoryForm, setCategoryForm] = useState({ name: '' });
   const [subCategoryForm, setSubCategoryForm] = useState({ parentId: '', name: '' });
-  const [serviceForm, setServiceForm] = useState({ description: '', price: 0 });
-
+  
   // Checklist Form State
   const [checklistForm, setChecklistForm] = useState<ChecklistTemplate>({
     id: '',
@@ -75,9 +80,32 @@ const AdminCatalog: React.FC = () => {
 
   const handleOpenModal = (item?: any) => {
     // Reset forms based on active tab or fill if item exists
-    if (activeTab === 'produtos' && item) {
-       setProductForm({ ...productForm, ...item });
+    if (activeTab === 'produtos') {
+      if (item) {
+         setProductForm({ 
+           ...productForm, 
+           ...item, 
+           // Ensure these fields exist if mapping from partial types
+           barcode: item.barcode || '', 
+           ncm: item.ncm || '',
+           unit: item.unit || 'un',
+           model: item.model || '',
+           serialNumber: item.serialNumber || '',
+           purchasePrice: item.purchasePrice || 0,
+           margin: item.margin || 0,
+           retailPrice: item.price || 0, // Map from main price
+           wholesalePrice: item.wholesalePrice || 0,
+           showInStore: item.isActive ? 'yes' : 'no'
+         });
+      } else {
+         // Reset
+         setProductForm({
+           id: '', barcode: '', name: '', description: '', ncm: '', brandId: '', categoryId: '', subCategoryId: '', 
+           unit: 'un', model: '', serialNumber: '', purchasePrice: 0, margin: 0, retailPrice: 0, wholesalePrice: 0, stock: 0, showInStore: 'yes'
+         });
+      }
     }
+    
     if (activeTab === 'marcas' && item) {
        setBrandForm(item);
     }
@@ -96,6 +124,24 @@ const AdminCatalog: React.FC = () => {
       }
     }
     setIsModalOpen(true);
+  };
+
+  const handleCloneProduct = (product: UiProduct) => {
+    const clonedProduct = {
+      ...productForm, // Base defaults
+      ...product,
+      id: '', // Reset ID for new creation
+      name: `${product.name} (Cópia)`,
+      retailPrice: product.price
+    };
+    setProductForm(clonedProduct as any);
+    setIsModalOpen(true);
+  };
+
+  const handleToggleProductStatus = (productId: string) => {
+    setProducts(prev => prev.map(p => 
+      p.id === productId ? { ...p, isActive: !p.isActive } : p
+    ));
   };
 
   const getModalTitle = () => {
@@ -133,7 +179,6 @@ const AdminCatalog: React.FC = () => {
   };
 
   const saveChecklist = () => {
-    // Logic to save checklist
     if (!checklistForm.name) return;
     const newChecklist = { ...checklistForm, id: checklistForm.id || Date.now().toString(), createdAt: new Date().toISOString() };
     
@@ -191,13 +236,23 @@ const AdminCatalog: React.FC = () => {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {products.map(p => (
-                      <tr key={p.id}>
+                      <tr key={p.id} className={`transition-opacity ${p.isActive ? 'opacity-100' : 'opacity-50 bg-gray-50'}`}>
                         <td className="px-6 py-4">
                            <div className="flex items-center gap-3">
-                             <img src={p.images[0]} alt="" className="w-10 h-10 rounded object-cover" />
+                             <div className="relative">
+                               <img src={p.images[0]} alt="" className={`w-12 h-12 rounded-lg object-cover border border-gray-200 ${!p.isActive && 'grayscale'}`} />
+                               {!p.isActive && (
+                                 <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded-lg">
+                                   <Power size={16} className="text-gray-600" />
+                                 </div>
+                               )}
+                             </div>
                              <div>
                                <div className="text-sm font-medium text-gray-900">{p.name}</div>
-                               <div className="text-xs text-gray-500">COD: {p.id}</div>
+                               <div className="text-xs text-gray-500 flex items-center gap-2">
+                                 COD: {p.id}
+                                 {!p.isActive && <span className="text-red-500 font-bold text-[10px] border border-red-200 bg-red-50 px-1 rounded">INATIVO</span>}
+                               </div>
                              </div>
                            </div>
                         </td>
@@ -205,10 +260,44 @@ const AdminCatalog: React.FC = () => {
                            {categories.find(c => c.id === p.categoryId)?.name || '-'}
                         </td>
                         <td className="px-6 py-4 text-sm font-medium text-gray-900">R$ {p.price.toFixed(2)}</td>
-                        <td className="px-6 py-4 text-sm text-gray-500">{p.stock}</td>
+                        <td className="px-6 py-4 text-sm text-gray-500">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                            {p.stock} un
+                          </span>
+                        </td>
                         <td className="px-6 py-4 text-right">
-                           <button onClick={() => handleOpenModal(p)} className="text-blue-600 hover:text-blue-900 mr-2"><Edit size={16} /></button>
-                           <button className="text-red-600 hover:text-red-900"><Trash2 size={16} /></button>
+                           <div className="flex items-center justify-end gap-2">
+                             {/* Botão Clonar */}
+                             <button 
+                               onClick={() => handleCloneProduct(p)} 
+                               title="Clonar Produto"
+                               className="group flex items-center justify-center w-8 h-8 rounded-lg border border-indigo-200 bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                             >
+                               <Copy size={16} />
+                             </button>
+
+                             {/* Botão Alterar */}
+                             <button 
+                               onClick={() => handleOpenModal(p)} 
+                               title="Alterar Cadastro"
+                               className="group flex items-center justify-center w-8 h-8 rounded-lg border border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm"
+                             >
+                               <Edit size={16} />
+                             </button>
+
+                             {/* Botão Desativar/Ativar */}
+                             <button 
+                               onClick={() => handleToggleProductStatus(p.id)}
+                               title={p.isActive ? "Desativar Produto" : "Ativar Produto"}
+                               className={`group flex items-center justify-center w-8 h-8 rounded-lg border transition-all shadow-sm ${
+                                 p.isActive 
+                                   ? 'border-gray-200 bg-white text-gray-400 hover:bg-red-50 hover:text-red-500 hover:border-red-200' 
+                                   : 'border-green-200 bg-green-50 text-green-600 hover:bg-green-600 hover:text-white'
+                               }`}
+                             >
+                               <Power size={16} />
+                             </button>
+                           </div>
                         </td>
                       </tr>
                     ))}
@@ -447,7 +536,7 @@ const AdminCatalog: React.FC = () => {
 
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Unidade</label>
-                 <select className="w-full border border-gray-300 rounded-md px-3 py-2">
+                 <select className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.unit} onChange={e => setProductForm({...productForm, unit: e.target.value})}>
                    <option value="un">UN</option>
                    <option value="kg">KG</option>
                    <option value="cx">CX</option>
@@ -459,15 +548,23 @@ const AdminCatalog: React.FC = () => {
               </div>
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Preço Custo</label>
-                 <input type="number" className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                 <input type="number" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.purchasePrice} onChange={e => setProductForm({...productForm, purchasePrice: parseFloat(e.target.value)})} />
               </div>
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Margem %</label>
-                 <input type="number" className="w-full border border-gray-300 rounded-md px-3 py-2" />
+                 <input type="number" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.margin} onChange={e => setProductForm({...productForm, margin: parseFloat(e.target.value)})} />
               </div>
               <div className="md:col-span-1">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Venda Varejo</label>
-                 <input type="number" className="w-full border border-blue-300 bg-blue-50 rounded-md px-3 py-2" />
+                 <input type="number" className="w-full border border-blue-300 bg-blue-50 rounded-md px-3 py-2" value={productForm.retailPrice} onChange={e => setProductForm({...productForm, retailPrice: parseFloat(e.target.value)})} />
+              </div>
+              
+               <div className="md:col-span-1">
+                 <label className="block text-sm font-medium text-gray-700 mb-1">Exibir na Loja?</label>
+                 <select className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.showInStore} onChange={e => setProductForm({...productForm, showInStore: e.target.value})}>
+                   <option value="yes">Sim</option>
+                   <option value="no">Não</option>
+                 </select>
               </div>
 
               <div className="md:col-span-4 flex justify-end gap-3 pt-4 border-t border-gray-100">
