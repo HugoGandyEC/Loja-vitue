@@ -1,3 +1,4 @@
+
 export interface Brand {
   id: string;
   name: string;
@@ -135,4 +136,24 @@ export interface AdminCollaborator {
   sellerName?: string;
   sellerContact?: string;
   sellerEmail?: string;
+}
+
+// Checklist Types
+export type ChecklistItemType = 'checkbox' | 'text' | 'photo' | 'file';
+
+export interface ChecklistItem {
+  id: string;
+  label: string;
+  type: ChecklistItemType;
+  required: boolean;
+  instructions?: string;
+}
+
+export interface ChecklistTemplate {
+  id: string;
+  name: string;
+  description: string;
+  relatedServiceId?: string; // Optional link to a specific service
+  items: ChecklistItem[];
+  createdAt: string;
 }

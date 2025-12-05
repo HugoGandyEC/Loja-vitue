@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ClipboardList, ShoppingCart, FileText, CheckSquare, DollarSign } from 'lucide-react';
+import { ClipboardList, ShoppingCart, FileText } from 'lucide-react';
 
 const AdminSales: React.FC = () => {
   const [activeTab, setActiveTab] = useState('vendas');
@@ -8,8 +8,6 @@ const AdminSales: React.FC = () => {
     { id: 'vendas', label: 'Vendas', icon: ShoppingCart },
     { id: 'os', label: 'Ordem de Serviço', icon: ClipboardList },
     { id: 'contrato', label: 'Contratos', icon: FileText },
-    { id: 'checklist', label: 'Checklist', icon: CheckSquare },
-    { id: 'financeiro', label: 'Financeiro', icon: DollarSign },
   ];
 
   return (
@@ -56,9 +54,9 @@ const AdminSales: React.FC = () => {
          )}
 
          {/* Placeholders for others */}
-         {['contrato', 'checklist', 'financeiro'].includes(activeTab) && (
+         {activeTab === 'contrato' && (
            <div className="flex items-center justify-center h-64 text-gray-400">
-             Conteúdo do módulo {activeTab}
+             Conteúdo do módulo de Contratos
            </div>
          )}
       </div>
