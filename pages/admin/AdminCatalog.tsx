@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Save, Plus, Search, Trash2, Edit, Image as ImageIcon, CheckSquare, Camera, FileText, Paperclip, GripVertical, Copy, Power, Eye } from 'lucide-react';
 import { CATEGORIES, BRANDS, PRODUCTS } from '../../data/mockData';
@@ -226,22 +225,22 @@ const AdminCatalog: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-800">Catálogo e Cadastros</h1>
         <button 
            onClick={() => handleOpenModal()}
-           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md transition-all hover:-translate-y-0.5"
         >
           <Plus size={18} /> Novo {tabs.find(t => t.id === activeTab)?.label.slice(0, -1)}
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="flex overflow-x-auto border-b border-gray-200 custom-scrollbar">
+      <div className="bg-white rounded-xl shadow-md border border-indigo-200 overflow-hidden">
+        <div className="flex overflow-x-auto border-b border-indigo-100 custom-scrollbar">
           {tabs.map(tab => (
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
               className={`px-6 py-4 text-sm font-medium whitespace-nowrap transition-colors ${
                 activeTab === tab.id
-                  ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                  ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
+                  : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50'
               }`}
             >
               {tab.label}
@@ -253,24 +252,24 @@ const AdminCatalog: React.FC = () => {
           
           {/* PRODUCT LIST */}
           {activeTab === 'produtos' && (
-            <div className="overflow-x-auto">
-               <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+            <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+               <table className="min-w-full divide-y divide-indigo-100">
+                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Produto</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Categoria</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Preço Venda</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estoque</th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Produto</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Categoria</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Preço Venda</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Estoque</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white divide-y divide-indigo-50">
                     {products.map(p => (
-                      <tr key={p.id} className={`transition-opacity ${p.isActive ? 'opacity-100' : 'opacity-50 bg-gray-50'}`}>
+                      <tr key={p.id} className={`transition-all duration-200 hover:bg-blue-50 hover:shadow-sm ${p.isActive ? '' : 'opacity-60 bg-gray-50'}`}>
                         <td className="px-6 py-4">
                            <div className="flex items-center gap-3">
-                             <div className="relative">
-                               <img src={p.images[0]} alt="" className={`w-12 h-12 rounded-lg object-cover border border-gray-200 ${!p.isActive && 'grayscale'}`} />
+                             <div className="relative group">
+                               <img src={p.images[0]} alt="" className={`w-12 h-12 rounded-lg object-cover border border-indigo-100 shadow-sm group-hover:scale-110 transition-transform ${!p.isActive && 'grayscale'}`} />
                                {!p.isActive && (
                                  <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded-lg">
                                    <Power size={16} className="text-gray-600" />
@@ -278,20 +277,20 @@ const AdminCatalog: React.FC = () => {
                                )}
                              </div>
                              <div>
-                               <div className="text-sm font-medium text-gray-900">{p.name}</div>
+                               <div className="text-sm font-bold text-gray-800">{p.name}</div>
                                <div className="text-xs text-gray-500 flex items-center gap-2">
                                  COD: {p.id}
-                                 {!p.isActive && <span className="text-red-500 font-bold text-[10px] border border-red-200 bg-red-50 px-1 rounded">INATIVO</span>}
+                                 {!p.isActive && <span className="text-red-600 font-bold text-[10px] border border-red-200 bg-red-50 px-1 rounded">INATIVO</span>}
                                </div>
                              </div>
                            </div>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-500">
+                        <td className="px-6 py-4 text-sm text-gray-600 font-medium">
                            {categories.find(c => c.id === p.categoryId)?.name || '-'}
                         </td>
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900">R$ {p.price.toFixed(2)}</td>
+                        <td className="px-6 py-4 text-sm font-bold text-gray-900">R$ {p.price.toFixed(2)}</td>
                         <td className="px-6 py-4 text-sm text-gray-500">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${p.stock > 0 ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                          <span className={`px-2 py-1 rounded-full text-xs font-bold ${p.stock > 0 ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-700 border border-red-200'}`}>
                             {p.stock} un
                           </span>
                         </td>
@@ -338,25 +337,25 @@ const AdminCatalog: React.FC = () => {
 
           {/* SERVICES LIST */}
           {activeTab === 'servicos' && (
-             <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+                <table className="min-w-full divide-y divide-indigo-100">
+                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descrição</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Categoria</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Preço Base</th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Descrição</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Categoria</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Preço Base</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white divide-y divide-indigo-50">
                     {services.map(s => (
-                      <tr key={s.id}>
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{s.description}</td>
-                        <td className="px-6 py-4 text-sm text-gray-500">{s.category}</td>
-                        <td className="px-6 py-4 text-sm text-gray-900">R$ {s.price.toFixed(2)}</td>
+                      <tr key={s.id} className="hover:bg-blue-50 transition-colors duration-200">
+                        <td className="px-6 py-4 text-sm font-semibold text-gray-900">{s.description}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{s.category}</td>
+                        <td className="px-6 py-4 text-sm font-bold text-gray-900">R$ {s.price.toFixed(2)}</td>
                         <td className="px-6 py-4 text-right">
-                           <button onClick={() => handleOpenModal(s)} className="text-blue-600 hover:text-blue-900 mr-2"><Edit size={16} /></button>
-                           <button className="text-red-600 hover:text-red-900"><Trash2 size={16} /></button>
+                           <button onClick={() => handleOpenModal(s)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
+                           <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16} /></button>
                         </td>
                       </tr>
                     ))}
@@ -367,24 +366,24 @@ const AdminCatalog: React.FC = () => {
 
            {/* BRANDS LIST */}
            {activeTab === 'marcas' && (
-             <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+                <table className="min-w-full divide-y divide-indigo-100">
+                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Marca</th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Marca</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white divide-y divide-indigo-50">
                     {brands.map(b => (
-                      <tr key={b.id}>
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900 flex items-center gap-3">
-                           <img src={b.logo} className="w-8 h-8 rounded object-cover border" alt="" />
+                      <tr key={b.id} className="hover:bg-blue-50 transition-colors duration-200">
+                        <td className="px-6 py-4 text-sm font-semibold text-gray-900 flex items-center gap-3">
+                           <img src={b.logo} className="w-8 h-8 rounded object-cover border border-gray-200" alt="" />
                            {b.name}
                         </td>
                         <td className="px-6 py-4 text-right">
-                           <button onClick={() => handleOpenModal(b)} className="text-blue-600 hover:text-blue-900 mr-2"><Edit size={16} /></button>
-                           <button className="text-red-600 hover:text-red-900"><Trash2 size={16} /></button>
+                           <button onClick={() => handleOpenModal(b)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
+                           <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16} /></button>
                         </td>
                       </tr>
                     ))}
@@ -395,23 +394,25 @@ const AdminCatalog: React.FC = () => {
 
           {/* CATEGORIES LIST */}
           {activeTab === 'categorias' && (
-             <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+                <table className="min-w-full divide-y divide-indigo-100">
+                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subcategorias</th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Nome</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Subcategorias</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white divide-y divide-indigo-50">
                     {categories.map(c => (
-                      <tr key={c.id}>
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{c.name}</td>
-                        <td className="px-6 py-4 text-sm text-gray-500">{c.subcategories.length}</td>
+                      <tr key={c.id} className="hover:bg-blue-50 transition-colors duration-200">
+                        <td className="px-6 py-4 text-sm font-semibold text-gray-900">{c.name}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">
+                          <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-bold">{c.subcategories.length}</span>
+                        </td>
                         <td className="px-6 py-4 text-right">
-                           <button onClick={() => handleOpenModal(c)} className="text-blue-600 hover:text-blue-900 mr-2"><Edit size={16} /></button>
-                           <button className="text-red-600 hover:text-red-900"><Trash2 size={16} /></button>
+                           <button onClick={() => handleOpenModal(c)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
+                           <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16} /></button>
                         </td>
                       </tr>
                     ))}
@@ -422,23 +423,23 @@ const AdminCatalog: React.FC = () => {
 
           {/* SUB-CATEGORIES LIST */}
           {activeTab === 'subcategorias' && (
-             <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200">
-                  <thead className="bg-gray-50">
+             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+                <table className="min-w-full divide-y divide-indigo-100">
+                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
                     <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Categoria Pai</th>
-                      <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Nome</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Categoria Pai</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
                     </tr>
                   </thead>
-                  <tbody className="bg-white divide-y divide-gray-200">
+                  <tbody className="bg-white divide-y divide-indigo-50">
                     {categories.flatMap(c => c.subcategories.map(s => ({...s, parentName: c.name}))).map(sub => (
-                      <tr key={sub.id}>
-                        <td className="px-6 py-4 text-sm font-medium text-gray-900">{sub.name}</td>
-                        <td className="px-6 py-4 text-sm text-gray-500">{sub.parentName}</td>
+                      <tr key={sub.id} className="hover:bg-blue-50 transition-colors duration-200">
+                        <td className="px-6 py-4 text-sm font-semibold text-gray-900">{sub.name}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600">{sub.parentName}</td>
                         <td className="px-6 py-4 text-right">
-                           <button onClick={() => handleOpenModal(sub)} className="text-blue-600 hover:text-blue-900 mr-2"><Edit size={16} /></button>
-                           <button className="text-red-600 hover:text-red-900"><Trash2 size={16} /></button>
+                           <button onClick={() => handleOpenModal(sub)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
+                           <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16} /></button>
                         </td>
                       </tr>
                     ))}
@@ -452,25 +453,25 @@ const AdminCatalog: React.FC = () => {
             <div className="overflow-x-auto">
                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                  {checklists.map(chk => (
-                   <div key={chk.id} className="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md transition-shadow">
+                   <div key={chk.id} className="bg-white rounded-xl border-2 border-indigo-100 p-5 hover:shadow-lg hover:shadow-indigo-100 hover:border-indigo-300 transition-all duration-300 group">
                      <div className="flex justify-between items-start mb-3">
-                       <h3 className="font-bold text-gray-800">{chk.name}</h3>
+                       <h3 className="font-bold text-indigo-900 group-hover:text-blue-700 transition-colors">{chk.name}</h3>
                        <div className="flex gap-2">
-                         <button onClick={() => handleOpenModal(chk)} className="text-blue-600 hover:bg-blue-50 p-1 rounded"><Edit size={16} /></button>
-                         <button className="text-red-600 hover:bg-red-50 p-1 rounded"><Trash2 size={16} /></button>
+                         <button onClick={() => handleOpenModal(chk)} className="text-indigo-600 hover:bg-indigo-50 p-1.5 rounded-lg transition-colors"><Edit size={16} /></button>
+                         <button className="text-red-500 hover:bg-red-50 p-1.5 rounded-lg transition-colors"><Trash2 size={16} /></button>
                        </div>
                      </div>
                      <p className="text-sm text-gray-500 mb-4 line-clamp-2">{chk.description}</p>
                      
                      <div className="space-y-2 mb-4">
-                       <div className="flex items-center text-xs text-gray-500 bg-gray-50 p-2 rounded">
-                          <CheckSquare className="w-3 h-3 mr-2" />
-                          {chk.items.length} itens de verificação
+                       <div className="flex items-center text-xs text-gray-600 bg-gray-50 p-2 rounded border border-gray-100">
+                          <CheckSquare className="w-3 h-3 mr-2 text-indigo-500" />
+                          <span className="font-semibold mr-1">{chk.items.length}</span> itens de verificação
                        </div>
                        {chk.relatedServiceId && (
-                         <div className="flex items-center text-xs text-blue-600 bg-blue-50 p-2 rounded">
+                         <div className="flex items-center text-xs text-blue-700 bg-blue-50 p-2 rounded border border-blue-100">
                            <Paperclip className="w-3 h-3 mr-2" />
-                           Vinculado a: {services.find(s => s.id === chk.relatedServiceId)?.description}
+                           Vinculado: {services.find(s => s.id === chk.relatedServiceId)?.description}
                          </div>
                        )}
                      </div>
@@ -479,10 +480,12 @@ const AdminCatalog: React.FC = () => {
                  
                  <button 
                   onClick={() => handleOpenModal()}
-                  className="border-2 border-dashed border-gray-300 rounded-xl p-5 flex flex-col items-center justify-center text-gray-400 hover:border-blue-500 hover:text-blue-500 transition-colors min-h-[200px]"
+                  className="border-2 border-dashed border-indigo-200 rounded-xl p-5 flex flex-col items-center justify-center text-indigo-400 hover:border-blue-500 hover:text-blue-600 hover:bg-blue-50/50 transition-all min-h-[200px]"
                  >
-                   <Plus size={32} className="mb-2" />
-                   <span className="font-medium">Criar Novo Checklist</span>
+                   <div className="w-12 h-12 rounded-full bg-indigo-50 flex items-center justify-center mb-3 group-hover:bg-blue-100 transition-colors">
+                      <Plus size={24} />
+                   </div>
+                   <span className="font-bold">Criar Novo Checklist</span>
                  </button>
                </div>
             </div>
@@ -490,7 +493,10 @@ const AdminCatalog: React.FC = () => {
 
           {/* OTHER TABS */}
           {['contrato', 'financeiro'].includes(activeTab) && (
-            <div className="text-center py-12 text-gray-500">Módulo em desenvolvimento. Clique em Novo para testar o modal.</div>
+            <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+              <p className="text-lg font-medium text-gray-700">Módulo em desenvolvimento</p>
+              <p className="text-sm mt-1">Clique em "Novo" para testar o modal, se aplicável.</p>
+            </div>
           )}
 
         </div>

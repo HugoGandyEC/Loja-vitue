@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Save, Plus, Search, Trash2, Edit } from 'lucide-react';
 import Modal from '../../components/Modal';
@@ -103,20 +102,20 @@ const AdminTeam: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-800">Equipe e Acesso</h1>
         <button 
            onClick={() => handleOpenModal()}
-           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md hover:shadow-lg transition-all"
         >
           <Plus size={18} /> Novo Cadastro
         </button>
       </div>
 
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="flex border-b border-gray-200">
+      <div className="bg-white rounded-xl shadow-md border border-indigo-200 overflow-hidden">
+        <div className="flex border-b border-indigo-100">
           <button
             onClick={() => setActiveTab('usuarios')}
             className={`flex-1 py-4 text-sm font-medium text-center transition-colors ${
               activeTab === 'usuarios'
-                ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
+                : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50'
             }`}
           >
             Usuários (Sistema)
@@ -125,8 +124,8 @@ const AdminTeam: React.FC = () => {
             onClick={() => setActiveTab('colaboradores')}
             className={`flex-1 py-4 text-sm font-medium text-center transition-colors ${
               activeTab === 'colaboradores'
-                ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
+                : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50'
             }`}
           >
             Colaboradores (Empresa)
@@ -134,40 +133,42 @@ const AdminTeam: React.FC = () => {
         </div>
 
         <div className="p-6">
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+            <table className="min-w-full divide-y divide-indigo-100">
+              <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nome</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">
+                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Nome</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Email</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">
                     {activeTab === 'usuarios' ? 'Cargo' : 'Documento'}
                   </th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Ações</th>
+                  <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-indigo-50">
                 {activeTab === 'usuarios' ? (
                    users.map(u => (
-                     <tr key={u.id}>
-                       <td className="px-6 py-4 text-sm font-medium text-gray-900">{u.name}</td>
+                     <tr key={u.id} className="hover:bg-blue-50 transition-colors duration-200 group">
+                       <td className="px-6 py-4 text-sm font-semibold text-gray-900 group-hover:text-blue-800">{u.name}</td>
                        <td className="px-6 py-4 text-sm text-gray-500">{u.email}</td>
-                       <td className="px-6 py-4 text-sm text-gray-500">{u.role}</td>
+                       <td className="px-6 py-4 text-sm text-gray-600">
+                          <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-bold">{u.role}</span>
+                       </td>
                        <td className="px-6 py-4 text-right">
-                         <button onClick={() => handleOpenModal(u)} className="text-blue-600 hover:text-blue-900 mr-2"><Edit size={16} /></button>
-                         <button className="text-red-600 hover:text-red-900"><Trash2 size={16} /></button>
+                         <button onClick={() => handleOpenModal(u)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
+                         <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16} /></button>
                        </td>
                      </tr>
                    ))
                 ) : (
                    collaborators.map(c => (
-                     <tr key={c.id}>
-                       <td className="px-6 py-4 text-sm font-medium text-gray-900">{c.name}</td>
+                     <tr key={c.id} className="hover:bg-blue-50 transition-colors duration-200 group">
+                       <td className="px-6 py-4 text-sm font-semibold text-gray-900 group-hover:text-blue-800">{c.name}</td>
                        <td className="px-6 py-4 text-sm text-gray-500">{c.email}</td>
-                       <td className="px-6 py-4 text-sm text-gray-500">{c.cnpj}</td>
+                       <td className="px-6 py-4 text-sm text-gray-600">{c.cnpj}</td>
                        <td className="px-6 py-4 text-right">
-                         <button onClick={() => handleOpenModal(c)} className="text-blue-600 hover:text-blue-900 mr-2"><Edit size={16} /></button>
-                         <button className="text-red-600 hover:text-red-900"><Trash2 size={16} /></button>
+                         <button onClick={() => handleOpenModal(c)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
+                         <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16} /></button>
                        </td>
                      </tr>
                    ))

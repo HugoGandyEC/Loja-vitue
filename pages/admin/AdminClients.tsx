@@ -142,21 +142,21 @@ const AdminClients: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-800">Gestão de Parceiros</h1>
         <button 
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
         >
           <Plus size={18} /> Novo Cadastro
         </button>
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="flex border-b border-gray-200">
+      <div className="bg-white rounded-xl shadow-md border border-indigo-100 overflow-hidden">
+        <div className="flex border-b border-indigo-100">
           <button
             onClick={() => setActiveTab('clientes')}
             className={`flex-1 py-4 text-sm font-medium text-center transition-colors ${
               activeTab === 'clientes'
-                ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
+                : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50'
             }`}
           >
             Clientes
@@ -165,8 +165,8 @@ const AdminClients: React.FC = () => {
             onClick={() => setActiveTab('fornecedores')}
             className={`flex-1 py-4 text-sm font-medium text-center transition-colors ${
               activeTab === 'fornecedores'
-                ? 'bg-blue-50 text-blue-600 border-b-2 border-blue-600'
-                : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
+                ? 'bg-blue-50 text-blue-700 border-b-2 border-blue-600'
+                : 'text-gray-500 hover:text-indigo-600 hover:bg-indigo-50'
             }`}
           >
             Fornecedores
@@ -176,60 +176,60 @@ const AdminClients: React.FC = () => {
         {/* Search & List */}
         <div className="p-6">
           <div className="relative mb-6">
-             <Search className="absolute left-3 top-2.5 text-gray-500 w-5 h-5" />
+             <Search className="absolute left-3 top-2.5 text-indigo-400 w-5 h-5" />
              <input 
                type="text" 
                placeholder={`Buscar ${activeTab}...`} 
                value={searchTerm}
                onChange={(e) => setSearchTerm(e.target.value)}
-               className="w-full pl-10 pr-4 py-2 bg-gray-50 text-gray-900 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+               className="w-full pl-10 pr-4 py-2 bg-gray-50 text-gray-900 border border-indigo-200 rounded-lg focus:ring-blue-500 focus:border-blue-500"
              />
           </div>
 
-          <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+          <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+            <table className="min-w-full divide-y divide-indigo-100">
+              <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nome / Razão</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Contato / Email</th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Documento</th>
-                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Nome / Razão</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Contato / Email</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Documento</th>
+                  <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="bg-white divide-y divide-indigo-50">
                 {activeTab === 'clientes' ? (
                    MOCK_CLIENTS.map(item => (
-                     <tr key={item.id}>
+                     <tr key={item.id} className="hover:bg-blue-50 transition-colors duration-200 group">
                        <td className="px-6 py-4 whitespace-nowrap">
-                         <div className="text-sm font-medium text-gray-900">{item.name}</div>
+                         <div className="text-sm font-semibold text-gray-900 group-hover:text-blue-800">{item.name}</div>
                          <div className="text-sm text-gray-500">{item.city}</div>
                        </td>
                        <td className="px-6 py-4 whitespace-nowrap">
                          <div className="text-sm text-gray-900">{item.email}</div>
                          <div className="text-sm text-gray-500">{item.contact}</div>
                        </td>
-                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.cpf}</td>
+                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{item.cpf}</td>
                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                         <button onClick={() => handleOpenModal(item)} className="text-blue-600 hover:text-blue-900 mr-3"><Edit size={16}/></button>
-                         <button className="text-red-600 hover:text-red-900"><Trash2 size={16}/></button>
+                         <button onClick={() => handleOpenModal(item)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={18}/></button>
+                         <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={18}/></button>
                        </td>
                      </tr>
                    ))
                 ) : (
                    MOCK_SUPPLIERS.map(item => (
-                     <tr key={item.id}>
+                     <tr key={item.id} className="hover:bg-blue-50 transition-colors duration-200 group">
                        <td className="px-6 py-4 whitespace-nowrap">
-                         <div className="text-sm font-medium text-gray-900">{item.corporate}</div>
+                         <div className="text-sm font-semibold text-gray-900 group-hover:text-blue-800">{item.corporate}</div>
                          <div className="text-sm text-gray-500">{item.name}</div>
                        </td>
                        <td className="px-6 py-4 whitespace-nowrap">
                          <div className="text-sm text-gray-900">{item.email}</div>
                          <div className="text-sm text-gray-500">{item.contact}</div>
                        </td>
-                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{item.cnpj}</td>
+                       <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{item.cnpj}</td>
                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                         <button onClick={() => handleOpenModal(item)} className="text-blue-600 hover:text-blue-900 mr-3"><Edit size={16}/></button>
-                         <button className="text-red-600 hover:text-red-900"><Trash2 size={16}/></button>
+                         <button onClick={() => handleOpenModal(item)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={18}/></button>
+                         <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={18}/></button>
                        </td>
                      </tr>
                    ))
