@@ -1,5 +1,6 @@
 import React from 'react';
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { HashRouter, Routes, Route, Navigate, Link } from 'react-router-dom';
+import { Lock } from 'lucide-react';
 import Navbar from './components/Navbar';
 import Home from './pages/Home';
 import CategoryPage from './pages/CategoryPage';
@@ -58,8 +59,12 @@ const ShopLayout: React.FC<{children: React.ReactNode}> = ({ children }) => {
             </div>
           </div>
         </div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-slate-800 text-center text-xs">
-          &copy; 2024 EcoSistens. Todos os direitos reservados.
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-12 pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center text-xs">
+          <p>&copy; 2024 EcoSistens. Todos os direitos reservados.</p>
+          <Link to="/admin" className="flex items-center gap-2 text-slate-600 hover:text-slate-400 transition-colors mt-4 md:mt-0">
+            <Lock size={12} />
+            <span>Área Administrativa</span>
+          </Link>
         </div>
       </footer>
     </div>
