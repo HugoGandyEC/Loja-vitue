@@ -182,7 +182,7 @@ const ProductDetail: React.FC = () => {
                    <Sparkles size={20} />
                  </div>
                  <div className="text-left">
-                   <h3 className="font-bold text-gray-900">Especialista Nexus IA</h3>
+                   <h3 className="font-bold text-gray-900">Especialista EcoSistens IA</h3>
                    <p className="text-sm text-gray-500">Tem dúvidas? Pergunte à nossa IA sobre este produto.</p>
                  </div>
               </div>
@@ -199,7 +199,7 @@ const ProductDetail: React.FC = () => {
                 
                 {aiAnswer && (
                    <div className="bg-indigo-50 rounded-lg p-3 mb-4 text-gray-800 text-sm border-l-4 border-indigo-500">
-                     <strong className="block text-indigo-700 mb-1">Nexus IA:</strong>
+                     <strong className="block text-indigo-700 mb-1">EcoSistens IA:</strong>
                      {aiAnswer}
                    </div>
                 )}

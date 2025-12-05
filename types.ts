@@ -45,3 +45,94 @@ export interface FilterState {
   maxPrice?: number;
   sort?: 'price_asc' | 'price_desc' | 'newest' | 'rating';
 }
+
+// Admin Types
+
+export interface Address {
+  zipCode: string;
+  street: string;
+  complement?: string;
+  district: string;
+  city: string;
+  state?: string;
+}
+
+export interface AdminClient {
+  id: string;
+  name: string;
+  contact: string;
+  email: string;
+  rg: string;
+  cpf: string;
+  address: Address;
+}
+
+export interface AdminSupplier {
+  id: string;
+  corporateName: string; // Razão Social
+  contact: string;
+  email: string;
+  cnpj: string;
+  stateRegistration: string; // Inscrição
+  address: Address;
+  sellerName: string;
+  sellerContact: string;
+  sellerEmail: string;
+}
+
+export interface AdminProduct extends Product {
+  barcode: string;
+  ncm: string;
+  unit: string;
+  model: string;
+  purchasePrice: number;
+  margin: number;
+  retailPrice: number; // Preço Venda Varejo
+  wholesalePrice: number; // Preço Venda Atacado
+  serialNumber: string;
+  supplierId: string;
+  showInStore: boolean; // Sim/Não
+  storeDescription: string;
+}
+
+export interface AdminService {
+  id: string;
+  barcode: string;
+  description: string;
+  ncm: string;
+  categoryId: string;
+  subCategoryId: string;
+  unit: string;
+  costPrice: number;
+  margin: number;
+  retailPrice: number;
+  wholesalePrice: number;
+  serialNumber?: string;
+  supplierId?: string;
+  quantity: number;
+  showInStore: boolean;
+  storeDescription: string;
+}
+
+export interface AdminUser {
+  id: string;
+  name: string;
+  contact: string;
+  email: string;
+  rg: string;
+  cpf: string;
+  address: Address;
+}
+
+export interface AdminCollaborator {
+  id: string;
+  corporateNameOrName: string;
+  contact: string;
+  email: string;
+  cnpjOrCpf: string;
+  inscriptionOrRg?: string;
+  address: Address;
+  sellerName?: string;
+  sellerContact?: string;
+  sellerEmail?: string;
+}

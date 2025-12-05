@@ -14,7 +14,7 @@ export const getProductAdvice = async (product: Product, question: string): Prom
     
     // Construct a rich context for the model
     const context = `
-      Você é um especialista de vendas da loja NexusShop, expert em tecnologia e eletrônicos.
+      Você é um especialista de vendas da loja EcoSistens, expert em tecnologia e eletrônicos.
       Você está ajudando um cliente com dúvidas sobre o seguinte produto:
       
       Nome: ${product.name}

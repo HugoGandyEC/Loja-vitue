@@ -32,8 +32,8 @@ const Navbar: React.FC = () => {
               {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
             <Link to="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">N</div>
-              <span className="font-bold text-xl tracking-tight text-slate-900">NexusShop</span>
+              <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl">E</div>
+              <span className="font-bold text-xl tracking-tight text-slate-900">EcoSistens</span>
             </Link>
           </div>
 
