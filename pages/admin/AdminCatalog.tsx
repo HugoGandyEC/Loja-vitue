@@ -47,7 +47,8 @@ const AdminCatalog: React.FC = () => {
   // Form States
   const [productForm, setProductForm] = useState({
     id: '', barcode: '', name: '', description: '', ncm: '', brandId: '', categoryId: '', subCategoryId: '', 
-    unit: 'un', model: '', serialNumber: '', purchasePrice: 0, margin: 0, retailPrice: 0, wholesalePrice: 0, stock: 0, showInStore: 'yes'
+    unit: 'un', model: '', serialNumber: '', purchasePrice: 0, margin: 0, retailPrice: 0, wholesalePrice: 0, stock: 0, showInStore: 'yes',
+    images: [] as string[]
   });
 
   const [brandForm, setBrandForm] = useState({ name: '', logo: '' });
@@ -96,13 +97,15 @@ const AdminCatalog: React.FC = () => {
            retailPrice: item.price || 0, // Map from main price
            wholesalePrice: item.wholesalePrice || 0,
            showInStore: item.isActive ? 'yes' : 'no',
-           stock: item.stock || 0
+           stock: item.stock || 0,
+           images: item.images || []
          });
       } else {
          // Reset
          setProductForm({
            id: '', barcode: '', name: '', description: '', ncm: '', brandId: '', categoryId: '', subCategoryId: '', 
-           unit: 'un', model: '', serialNumber: '', purchasePrice: 0, margin: 0, retailPrice: 0, wholesalePrice: 0, stock: 0, showInStore: 'yes'
+           unit: 'un', model: '', serialNumber: '', purchasePrice: 0, margin: 0, retailPrice: 0, wholesalePrice: 0, stock: 0, showInStore: 'yes',
+           images: []
          });
       }
     }
@@ -133,7 +136,8 @@ const AdminCatalog: React.FC = () => {
       ...product,
       id: '', // Reset ID for new creation
       name: `${product.name} (Cópia)`,
-      retailPrice: product.price
+      retailPrice: product.price,
+      images: product.images || []
     };
     setProductForm(clonedProduct as any);
     setIsModalOpen(true);
@@ -143,6 +147,31 @@ const AdminCatalog: React.FC = () => {
     setProducts(prev => prev.map(p => 
       p.id === productId ? { ...p, isActive: !p.isActive } : p
     ));
+  };
+
+  // --- Image Handling ---
+  const handleAddImage = () => {
+    // Generate random seed for mock
+    const seed = Math.floor(Math.random() * 10000);
+    const mockUrl = `https://picsum.photos/seed/${seed}/800/800`;
+    
+    // In a real app, this would be a file upload. Here we ask for URL or use mock.
+    const url = window.prompt("Insira a URL da imagem (ou OK para gerar aleatória):", mockUrl);
+    
+    if (url !== null) {
+        const finalUrl = url.trim() || mockUrl;
+        setProductForm(prev => ({
+            ...prev,
+            images: [...(prev.images || []), finalUrl]
+        }));
+    }
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setProductForm(prev => ({
+        ...prev,
+        images: (prev.images || []).filter((_, i) => i !== index)
+    }));
   };
 
   const getModalTitle = () => {
@@ -556,6 +585,46 @@ const AdminCatalog: React.FC = () => {
               <div className="md:col-span-2">
                  <label className="block text-sm font-medium text-gray-700 mb-1">Estoque Inicial (Quantidade)</label>
                  <input type="number" className="w-full border border-gray-300 rounded-md px-3 py-2" value={productForm.stock} onChange={e => setProductForm({...productForm, stock: parseInt(e.target.value) || 0})} />
+              </div>
+
+              {/* PRODUCT IMAGES GALLERY */}
+              <div className="md:col-span-4 border-t border-gray-100 pt-4 mt-2">
+                 <h3 className="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Fotos do Produto (Máx. 4)</h3>
+                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {[0, 1, 2, 3].map((index) => {
+                       const hasImage = productForm.images && productForm.images[index];
+                       return (
+                          <div key={index} className="relative aspect-square rounded-lg border-2 border-dashed border-gray-300 flex flex-col items-center justify-center bg-gray-50 overflow-hidden group hover:border-blue-400 transition-colors">
+                             {hasImage ? (
+                                <>
+                                   <img src={productForm.images[index]} alt={`Foto ${index}`} className="w-full h-full object-cover" />
+                                   <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                                     <button
+                                       type="button"
+                                       onClick={() => handleRemoveImage(index)}
+                                       className="p-2 bg-red-600 text-white rounded-full hover:bg-red-700"
+                                       title="Remover foto"
+                                     >
+                                       <Trash2 size={16} />
+                                     </button>
+                                   </div>
+                                </>
+                             ) : (
+                                <button
+                                   type="button"
+                                   onClick={handleAddImage}
+                                   disabled={index !== (productForm.images?.length || 0)}
+                                   className={`flex flex-col items-center justify-center w-full h-full text-gray-400 ${index === (productForm.images?.length || 0) ? 'hover:text-blue-600 cursor-pointer' : 'opacity-50 cursor-not-allowed'}`}
+                                >
+                                   <Camera size={24} className="mb-2" />
+                                   <span className="text-xs font-medium">Adicionar Foto</span>
+                                </button>
+                             )}
+                          </div>
+                       );
+                    })}
+                 </div>
+                 <p className="text-xs text-gray-500 mt-2">Clique no ícone de câmera para adicionar uma imagem.</p>
               </div>
 
               <div className="md:col-span-4 border-t border-gray-100 pt-4">
