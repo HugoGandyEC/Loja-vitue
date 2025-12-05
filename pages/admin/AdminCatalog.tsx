@@ -87,6 +87,8 @@ const AdminCatalog: React.FC = () => {
            ...item, 
            // Ensure these fields exist if mapping from partial types
            barcode: item.barcode || '', 
+           name: item.name || '',
+           description: item.description || '',
            ncm: item.ncm || '',
            unit: item.unit || 'un',
            model: item.model || '',
@@ -631,6 +633,18 @@ const AdminCatalog: React.FC = () => {
                     })}
                  </div>
                  <p className="text-xs text-gray-500 mt-2">Clique no ícone de câmera para adicionar uma imagem.</p>
+              </div>
+
+              {/* DESCRIÇÃO LONGA */}
+              <div className="md:col-span-4 mt-4">
+                 <label className="block text-sm font-medium text-gray-700 mb-1">Descrição Longa / Detalhes do Produto</label>
+                 <textarea 
+                    rows={4} 
+                    className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500" 
+                    value={productForm.description} 
+                    onChange={e => setProductForm({...productForm, description: e.target.value})}
+                    placeholder="Descreva detalhadamente o produto, suas funcionalidades e especificações..."
+                 />
               </div>
 
               <div className="md:col-span-4 border-t border-gray-100 pt-4">
