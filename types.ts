@@ -56,6 +56,8 @@ export interface Address {
   district: string;
   city: string;
   state?: string;
+  number?: string;
+  label?: string; // e.g. "Principal", "Entrega", "Cobrança"
 }
 
 export interface AdminClient {
@@ -65,17 +67,18 @@ export interface AdminClient {
   email: string;
   rg: string;
   cpf: string;
-  address: Address;
+  addresses: Address[]; // Changed from single address to array
 }
 
 export interface AdminSupplier {
   id: string;
   corporateName: string; // Razão Social
+  name: string; // Nome Fantasia
   contact: string;
   email: string;
   cnpj: string;
   stateRegistration: string; // Inscrição
-  address: Address;
+  addresses: Address[]; // Changed from single address to array
   sellerName: string;
   sellerContact: string;
   sellerEmail: string;
