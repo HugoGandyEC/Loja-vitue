@@ -160,3 +160,27 @@ export interface ChecklistTemplate {
   items: ChecklistItem[];
   createdAt: string;
 }
+
+// Service Order Type
+export interface ServiceOrder {
+  id: string;
+  clientId: string;
+  clientName: string;
+  equipment: string;
+  serialNumber?: string;
+  issueDescription: string;
+  status: 'Aberto' | 'Em Análise' | 'Aguardando Peça' | 'Concluído' | 'Cancelado';
+  checklistTemplateId?: string; // Link to the checklist used
+  checklistTemplateName?: string;
+  dateIn: string;
+  estimatedDateOut?: string;
+  totalValue?: number;
+}
+
+// Contract Types
+export interface ContractTemplate {
+  id: string;
+  title: string;
+  content: string; // HTML content
+  lastModified: string;
+}
