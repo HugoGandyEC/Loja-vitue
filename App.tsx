@@ -10,12 +10,13 @@ import { CartProvider } from './context/CartContext';
 
 // Admin Imports
 import AdminLayout from './layouts/AdminLayout';
+import AdminDashboard from './pages/admin/AdminDashboard';
 import AdminClients from './pages/admin/AdminClients';
 import AdminCatalog from './pages/admin/AdminCatalog';
 import AdminSales from './pages/admin/AdminSales';
 import AdminTeam from './pages/admin/AdminTeam';
 
-const ShopLayout: React.FC<{children: React.ReactNode}> = ({ children }) => {
+const ShopLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="min-h-screen flex flex-col bg-white">
       <Navbar />
@@ -32,7 +33,7 @@ const ShopLayout: React.FC<{children: React.ReactNode}> = ({ children }) => {
             </div>
             <p className="text-sm">Tecnologia de ponta ao seu alcance. A melhor experiência de compra online.</p>
           </div>
-          
+
           <div>
             <h4 className="text-white font-bold mb-4">Links Rápidos</h4>
             <ul className="space-y-2 text-sm">
@@ -41,7 +42,7 @@ const ShopLayout: React.FC<{children: React.ReactNode}> = ({ children }) => {
               <li><a href="#" className="hover:text-blue-400">Blog</a></li>
             </ul>
           </div>
-          
+
           <div>
             <h4 className="text-white font-bold mb-4">Ajuda</h4>
             <ul className="space-y-2 text-sm">
@@ -78,20 +79,20 @@ const App: React.FC = () => {
         <Routes>
           {/* Admin Routes */}
           <Route path="/admin" element={<AdminLayout />}>
-             <Route index element={<Navigate to="/admin/dashboard" replace />} />
-             <Route path="dashboard" element={<div className="p-8"><h1>Bem vindo ao Painel EcoSistens</h1><p className="text-gray-500">Selecione um módulo no menu lateral.</p></div>} />
-             <Route path="clients" element={<AdminClients />} />
-             <Route path="catalog" element={<AdminCatalog />} />
-             <Route path="sales" element={<AdminSales />} />
-             <Route path="team" element={<AdminTeam />} />
-             <Route path="config" element={<div className="p-8"><h1>Configurações do Sistema</h1></div>} />
+            <Route index element={<Navigate to="/admin/dashboard" replace />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
+            <Route path="clients" element={<AdminClients />} />
+            <Route path="catalog" element={<AdminCatalog />} />
+            <Route path="sales" element={<AdminSales />} />
+            <Route path="team" element={<AdminTeam />} />
+            <Route path="config" element={<div className="p-8"><h1>Configurações do Sistema</h1></div>} />
           </Route>
 
           {/* Shop Routes */}
           <Route path="/" element={<ShopLayout><Home /></ShopLayout>} />
           <Route path="/category/:slug" element={<ShopLayout><CategoryPage /></ShopLayout>} />
           <Route path="/product/:id" element={<ShopLayout><ProductDetail /></ShopLayout>} />
-          
+
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </HashRouter>
