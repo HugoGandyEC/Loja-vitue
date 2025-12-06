@@ -206,7 +206,7 @@ const AdminSales: React.FC = () => {
            <div className="p-6">
              <div className="flex justify-between mb-6">
                <h2 className="text-lg font-semibold text-gray-800">Histórico de Vendas</h2>
-               <button className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors flex items-center gap-2">
+               <button className="px-4 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors flex items-center gap-2 hover:shadow-lg">
                  <Plus size={16} /> Nova Venda
                </button>
              </div>
@@ -233,22 +233,22 @@ const AdminSales: React.FC = () => {
                </div>
                <button 
                  onClick={() => handleOpenOsModal()}
-                 className="w-full md:w-auto px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition-all shadow-md flex items-center justify-center gap-2"
+                 className="w-full md:w-auto px-6 py-2.5 bg-blue-600 text-white rounded-lg text-sm font-bold hover:bg-blue-700 transition-all shadow-md flex items-center justify-center gap-2 hover:-translate-y-0.5"
                >
                  <ClipboardList size={18} /> Nova O.S.
                </button>
              </div>
 
-             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-xl bg-white">
                 <table className="min-w-full divide-y divide-indigo-100">
-                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
+                  <thead className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Nº OS / Data</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Cliente</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Equipamento / Defeito</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Checklist Vinculado</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Status</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Nº OS / Data</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Cliente</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Equipamento / Defeito</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Checklist Vinculado</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Status</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-white">Ações</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-indigo-50">
@@ -257,13 +257,13 @@ const AdminSales: React.FC = () => {
                         os.equipment.toLowerCase().includes(searchTerm.toLowerCase()) ||
                         os.id.toLowerCase().includes(searchTerm.toLowerCase())
                     ).map((os) => (
-                      <tr key={os.id} className="hover:bg-blue-50 transition-colors duration-200">
+                      <tr key={os.id} className="transition-all duration-300 group hover:shadow-lg hover:scale-[1.01] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:z-10 relative border-l-4 border-l-transparent hover:border-l-blue-500">
                         <td className="px-6 py-4 whitespace-nowrap">
                           <div className="text-sm font-bold text-indigo-900">{os.id}</div>
                           <div className="text-xs text-gray-500 flex items-center gap-1"><Calendar size={12}/> {os.dateIn}</div>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap">
-                           <div className="text-sm font-medium text-gray-900">{os.clientName}</div>
+                           <div className="text-sm font-medium text-gray-900 group-hover:text-blue-800">{os.clientName}</div>
                         </td>
                         <td className="px-6 py-4">
                            <div className="text-sm text-gray-900 font-medium">{os.equipment}</div>
@@ -285,8 +285,8 @@ const AdminSales: React.FC = () => {
                            </span>
                         </td>
                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                           <button onClick={() => handleOpenOsModal(os)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16}/></button>
-                           <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16}/></button>
+                           <button onClick={() => handleOpenOsModal(os)} className="text-indigo-600 hover:text-indigo-900 bg-white border border-indigo-200 p-2 rounded-lg mr-2 hover:bg-indigo-50 transition-colors shadow-sm"><Edit size={16}/></button>
+                           <button className="text-red-500 hover:text-red-700 bg-white border border-red-200 p-2 rounded-lg hover:bg-red-50 transition-colors shadow-sm"><Trash2 size={16}/></button>
                         </td>
                       </tr>
                     ))}
@@ -328,7 +328,7 @@ const AdminSales: React.FC = () => {
 
              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {contracts.map(contract => (
-                  <div key={contract.id} className="bg-white rounded-xl border border-indigo-200 p-5 hover:shadow-lg hover:border-blue-300 transition-all group flex flex-col h-full">
+                  <div key={contract.id} className="bg-white rounded-xl border border-indigo-200 p-5 hover:shadow-lg hover:border-blue-300 transition-all group flex flex-col h-full hover:-translate-y-1">
                      <div className="flex items-start justify-between mb-4">
                         <div className="p-3 bg-blue-50 rounded-lg text-blue-600">
                           <FileText size={24} />

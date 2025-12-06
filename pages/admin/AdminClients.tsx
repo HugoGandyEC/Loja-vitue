@@ -218,14 +218,14 @@ const AdminClients: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-800">Gestão de Parceiros</h1>
         <button 
           onClick={() => handleOpenModal()}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg"
+          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md hover:shadow-lg hover:-translate-y-0.5"
         >
           <Plus size={18} /> Novo Cadastro
         </button>
       </div>
 
       {/* Tabs */}
-      <div className="bg-white rounded-xl shadow-md border border-indigo-100 overflow-hidden">
+      <div className="bg-white rounded-xl shadow-md border border-indigo-200 overflow-hidden">
         <div className="flex border-b border-indigo-100">
           <button
             onClick={() => setActiveTab('clientes')}
@@ -262,23 +262,23 @@ const AdminClients: React.FC = () => {
              />
           </div>
 
-          <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+          <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-xl bg-white">
             <table className="min-w-full divide-y divide-indigo-100">
-              <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
+              <thead className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
                 <tr>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Nome / Razão</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Contato / Email</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Cidade (Principal)</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Documento</th>
-                  <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Nome / Razão</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Contato / Email</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Cidade (Principal)</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Documento</th>
+                  <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-white">Ações</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-indigo-50">
                 {activeTab === 'clientes' ? (
                    MOCK_CLIENTS.map(item => (
-                     <tr key={item.id} className="hover:bg-blue-50 transition-colors duration-200 group">
+                     <tr key={item.id} className="transition-all duration-300 group hover:shadow-lg hover:scale-[1.01] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:z-10 relative border-l-4 border-l-transparent hover:border-l-blue-500">
                        <td className="px-6 py-4 whitespace-nowrap">
-                         <div className="text-sm font-semibold text-gray-900 group-hover:text-blue-800">{item.name}</div>
+                         <div className="text-sm font-semibold text-gray-900 group-hover:text-blue-800 transition-colors">{item.name}</div>
                        </td>
                        <td className="px-6 py-4 whitespace-nowrap">
                          <div className="text-sm text-gray-900">{item.email}</div>
@@ -289,16 +289,16 @@ const AdminClients: React.FC = () => {
                        </td>
                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{item.cpf}</td>
                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                         <button onClick={() => handleOpenModal(item)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={18}/></button>
-                         <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={18}/></button>
+                         <button onClick={() => handleOpenModal(item)} className="text-indigo-600 hover:text-indigo-900 bg-white border border-indigo-200 p-2 rounded-lg mr-2 hover:bg-indigo-50 transition-colors shadow-sm"><Edit size={16}/></button>
+                         <button className="text-red-500 hover:text-red-700 bg-white border border-red-200 p-2 rounded-lg hover:bg-red-50 transition-colors shadow-sm"><Trash2 size={16}/></button>
                        </td>
                      </tr>
                    ))
                 ) : (
                    MOCK_SUPPLIERS.map(item => (
-                     <tr key={item.id} className="hover:bg-blue-50 transition-colors duration-200 group">
+                     <tr key={item.id} className="transition-all duration-300 group hover:shadow-lg hover:scale-[1.01] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:z-10 relative border-l-4 border-l-transparent hover:border-l-blue-500">
                        <td className="px-6 py-4 whitespace-nowrap">
-                         <div className="text-sm font-semibold text-gray-900 group-hover:text-blue-800">{item.corporateName}</div>
+                         <div className="text-sm font-semibold text-gray-900 group-hover:text-blue-800 transition-colors">{item.corporateName}</div>
                          <div className="text-sm text-gray-500">{item.name}</div>
                        </td>
                        <td className="px-6 py-4 whitespace-nowrap">
@@ -310,8 +310,8 @@ const AdminClients: React.FC = () => {
                        </td>
                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-600">{item.cnpj}</td>
                        <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                         <button onClick={() => handleOpenModal(item)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={18}/></button>
-                         <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={18}/></button>
+                         <button onClick={() => handleOpenModal(item)} className="text-indigo-600 hover:text-indigo-900 bg-white border border-indigo-200 p-2 rounded-lg mr-2 hover:bg-indigo-50 transition-colors shadow-sm"><Edit size={16}/></button>
+                         <button className="text-red-500 hover:text-red-700 bg-white border border-red-200 p-2 rounded-lg hover:bg-red-50 transition-colors shadow-sm"><Trash2 size={16}/></button>
                        </td>
                      </tr>
                    ))

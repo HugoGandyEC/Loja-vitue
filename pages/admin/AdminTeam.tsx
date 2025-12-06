@@ -102,7 +102,7 @@ const AdminTeam: React.FC = () => {
         <h1 className="text-2xl font-bold text-gray-800">Equipe e Acesso</h1>
         <button 
            onClick={() => handleOpenModal()}
-           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md hover:shadow-lg transition-all"
+           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md hover:shadow-lg hover:-translate-y-0.5 transition-all"
         >
           <Plus size={18} /> Novo Cadastro
         </button>
@@ -133,42 +133,42 @@ const AdminTeam: React.FC = () => {
         </div>
 
         <div className="p-6">
-          <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+          <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-xl bg-white">
             <table className="min-w-full divide-y divide-indigo-100">
-              <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
+              <thead className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
                 <tr>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Nome</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Email</th>
-                  <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">
+                  <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Nome</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Email</th>
+                  <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">
                     {activeTab === 'usuarios' ? 'Cargo' : 'Documento'}
                   </th>
-                  <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
+                  <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-white">Ações</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-indigo-50">
                 {activeTab === 'usuarios' ? (
                    users.map(u => (
-                     <tr key={u.id} className="hover:bg-blue-50 transition-colors duration-200 group">
+                     <tr key={u.id} className="transition-all duration-300 group hover:shadow-lg hover:scale-[1.01] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:z-10 relative border-l-4 border-l-transparent hover:border-l-blue-500">
                        <td className="px-6 py-4 text-sm font-semibold text-gray-900 group-hover:text-blue-800">{u.name}</td>
                        <td className="px-6 py-4 text-sm text-gray-500">{u.email}</td>
                        <td className="px-6 py-4 text-sm text-gray-600">
-                          <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-bold">{u.role}</span>
+                          <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-bold border border-indigo-200">{u.role}</span>
                        </td>
                        <td className="px-6 py-4 text-right">
-                         <button onClick={() => handleOpenModal(u)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
-                         <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16} /></button>
+                         <button onClick={() => handleOpenModal(u)} className="text-indigo-600 hover:text-indigo-900 bg-white border border-indigo-200 p-2 rounded-lg mr-2 hover:bg-indigo-50 transition-colors shadow-sm"><Edit size={16} /></button>
+                         <button className="text-red-500 hover:text-red-700 bg-white border border-red-200 p-2 rounded-lg hover:bg-red-50 transition-colors shadow-sm"><Trash2 size={16} /></button>
                        </td>
                      </tr>
                    ))
                 ) : (
                    collaborators.map(c => (
-                     <tr key={c.id} className="hover:bg-blue-50 transition-colors duration-200 group">
+                     <tr key={c.id} className="transition-all duration-300 group hover:shadow-lg hover:scale-[1.01] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:z-10 relative border-l-4 border-l-transparent hover:border-l-blue-500">
                        <td className="px-6 py-4 text-sm font-semibold text-gray-900 group-hover:text-blue-800">{c.name}</td>
                        <td className="px-6 py-4 text-sm text-gray-500">{c.email}</td>
                        <td className="px-6 py-4 text-sm text-gray-600">{c.cnpj}</td>
                        <td className="px-6 py-4 text-right">
-                         <button onClick={() => handleOpenModal(c)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
-                         <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16} /></button>
+                         <button onClick={() => handleOpenModal(c)} className="text-indigo-600 hover:text-indigo-900 bg-white border border-indigo-200 p-2 rounded-lg mr-2 hover:bg-indigo-50 transition-colors shadow-sm"><Edit size={16} /></button>
+                         <button className="text-red-500 hover:text-red-700 bg-white border border-red-200 p-2 rounded-lg hover:bg-red-50 transition-colors shadow-sm"><Trash2 size={16} /></button>
                        </td>
                      </tr>
                    ))

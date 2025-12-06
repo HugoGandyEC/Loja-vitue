@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Save, Plus, Search, Trash2, Edit, Image as ImageIcon, CheckSquare, Camera, FileText, Paperclip, GripVertical, Copy, Power, Eye } from 'lucide-react';
+import React, { useState, useRef } from 'react';
+import { Save, Plus, Search, Trash2, Edit, Image as ImageIcon, CheckSquare, Camera, FileText, Paperclip, GripVertical, Copy, Power, Eye, Upload, Printer } from 'lucide-react';
 import { CATEGORIES, BRANDS, PRODUCTS } from '../../data/mockData';
-import { Category, Brand, Product, ChecklistTemplate, ChecklistItem } from '../../types';
+import { Category, Brand, Product, ChecklistTemplate, ChecklistItem, ContractTemplate } from '../../types';
 import Modal from '../../components/Modal';
+import RichTextEditor from '../../components/RichTextEditor';
+import mammoth from 'mammoth';
 
 type CatalogTab = 'produtos' | 'servicos' | 'marcas' | 'categorias' | 'subcategorias' | 'contrato' | 'checklist' | 'financeiro';
 
@@ -10,6 +12,21 @@ type CatalogTab = 'produtos' | 'servicos' | 'marcas' | 'categorias' | 'subcatego
 interface UiProduct extends Product {
   isActive?: boolean;
 }
+
+const MOCK_CONTRACTS: ContractTemplate[] = [
+  {
+    id: 'cont1',
+    title: 'Contrato de Prestação de Serviços - Padrão',
+    lastModified: '2024-03-15',
+    content: '<h1>CONTRATO DE PRESTAÇÃO DE SERVIÇOS</h1><p><strong>CONTRATANTE:</strong> [Nome do Cliente]...</p><p><strong>CONTRATADA:</strong> EcoSistens Tecnologia...</p><h2>1. DO OBJETO</h2><p>O presente contrato tem como objeto a prestação de serviços de manutenção de computadores.</p>'
+  },
+  {
+    id: 'cont2',
+    title: 'Termo de Garantia 90 Dias',
+    lastModified: '2024-02-10',
+    content: '<h1>TERMO DE GARANTIA</h1><p>A EcoSistens garante os serviços prestados pelo prazo de 90 dias...</p>'
+  }
+];
 
 const AdminCatalog: React.FC = () => {
   const [activeTab, setActiveTab] = useState<CatalogTab>('produtos');
@@ -42,6 +59,11 @@ const AdminCatalog: React.FC = () => {
       ]
     }
   ]);
+
+  // Contracts State
+  const [contracts, setContracts] = useState<ContractTemplate[]>(MOCK_CONTRACTS);
+  const [contractForm, setContractForm] = useState<ContractTemplate>({ id: '', title: '', content: '', lastModified: '' });
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   // Form States
   const [productForm, setProductForm] = useState({
@@ -128,6 +150,13 @@ const AdminCatalog: React.FC = () => {
         });
       }
     }
+    if (activeTab === 'contrato') {
+      if (item) {
+        setContractForm(item);
+      } else {
+        setContractForm({ id: '', title: 'Novo Modelo de Contrato', content: '<p>Comece a digitar ou importe um arquivo .docx</p>', lastModified: '' });
+      }
+    }
     setIsModalOpen(true);
   };
 
@@ -183,6 +212,7 @@ const AdminCatalog: React.FC = () => {
       case 'categorias': return 'Cadastro de Categoria';
       case 'subcategorias': return 'Cadastro de Sub-Categoria';
       case 'checklist': return 'Criar Modelo de Checklist';
+      case 'contrato': return 'Editor de Modelo de Contrato';
       default: return 'Cadastro';
     }
   };
@@ -221,16 +251,66 @@ const AdminCatalog: React.FC = () => {
     setIsModalOpen(false);
   };
 
+  // --- Contract Handlers ---
+  const handleContractFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = async (e) => {
+      const arrayBuffer = e.target?.result as ArrayBuffer;
+      try {
+        const result = await mammoth.convertToHtml({ arrayBuffer });
+        setContractForm({
+          id: '', 
+          title: file.name.replace('.docx', ''),
+          content: result.value,
+          lastModified: new Date().toISOString().split('T')[0]
+        });
+        setIsModalOpen(true);
+      } catch (error) {
+        console.error("Erro ao converter arquivo:", error);
+        alert("Erro ao ler o arquivo .docx. Certifique-se de que é um arquivo válido.");
+      }
+    };
+    reader.readAsArrayBuffer(file);
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleSaveContract = () => {
+    if (!contractForm.title) return;
+    const newContract = {
+      ...contractForm,
+      id: contractForm.id || `cont-${Date.now()}`,
+      lastModified: new Date().toISOString().split('T')[0]
+    };
+
+    if (contractForm.id) {
+      setContracts(prev => prev.map(c => c.id === contractForm.id ? newContract : c));
+    } else {
+      setContracts(prev => [newContract, ...prev]);
+    }
+    setIsModalOpen(false);
+  };
+
+  const handleDeleteContract = (id: string) => {
+    if (window.confirm("Tem certeza que deseja excluir este modelo?")) {
+      setContracts(prev => prev.filter(c => c.id !== id));
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-gray-800">Catálogo e Cadastros</h1>
-        <button 
-           onClick={() => handleOpenModal()}
-           className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md transition-all hover:-translate-y-0.5"
-        >
-          <Plus size={18} /> Novo {tabs.find(t => t.id === activeTab)?.label.slice(0, -1)}
-        </button>
+        {activeTab !== 'contrato' && (
+          <button 
+             onClick={() => handleOpenModal()}
+             className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-md transition-all hover:-translate-y-0.5"
+          >
+            <Plus size={18} /> Novo {tabs.find(t => t.id === activeTab)?.label.slice(0, -1)}
+          </button>
+        )}
       </div>
 
       <div className="bg-white rounded-xl shadow-md border border-indigo-200 overflow-hidden">
@@ -254,24 +334,24 @@ const AdminCatalog: React.FC = () => {
           
           {/* PRODUCT LIST */}
           {activeTab === 'produtos' && (
-            <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+            <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-xl bg-white">
                <table className="min-w-full divide-y divide-indigo-100">
-                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
+                  <thead className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Produto</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Categoria</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Preço Venda</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Estoque</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Produto</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Categoria</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Preço Venda</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Estoque</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-white">Ações</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-indigo-50">
                     {products.map(p => (
-                      <tr key={p.id} className={`transition-all duration-200 hover:bg-blue-50 hover:shadow-sm ${p.isActive ? '' : 'opacity-60 bg-gray-50'}`}>
+                      <tr key={p.id} className={`transition-all duration-300 group hover:shadow-lg hover:scale-[1.01] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:z-10 relative border-l-4 border-l-transparent hover:border-l-blue-500 ${p.isActive ? '' : 'opacity-60 bg-gray-50 grayscale hover:grayscale-0'}`}>
                         <td className="px-6 py-4">
                            <div className="flex items-center gap-3">
-                             <div className="relative group">
-                               <img src={p.images[0]} alt="" className={`w-12 h-12 rounded-lg object-cover border border-indigo-100 shadow-sm group-hover:scale-110 transition-transform ${!p.isActive && 'grayscale'}`} />
+                             <div className="relative group/img">
+                               <img src={p.images[0]} alt="" className={`w-12 h-12 rounded-lg object-cover border border-indigo-100 shadow-sm group-hover/img:scale-110 transition-transform ${!p.isActive && 'grayscale'}`} />
                                {!p.isActive && (
                                  <div className="absolute inset-0 flex items-center justify-center bg-black/10 rounded-lg">
                                    <Power size={16} className="text-gray-600" />
@@ -279,7 +359,7 @@ const AdminCatalog: React.FC = () => {
                                )}
                              </div>
                              <div>
-                               <div className="text-sm font-bold text-gray-800">{p.name}</div>
+                               <div className="text-sm font-bold text-gray-800 group-hover:text-blue-700 transition-colors">{p.name}</div>
                                <div className="text-xs text-gray-500 flex items-center gap-2">
                                  COD: {p.id}
                                  {!p.isActive && <span className="text-red-600 font-bold text-[10px] border border-red-200 bg-red-50 px-1 rounded">INATIVO</span>}
@@ -287,22 +367,22 @@ const AdminCatalog: React.FC = () => {
                              </div>
                            </div>
                         </td>
-                        <td className="px-6 py-4 text-sm text-gray-600 font-medium">
+                        <td className="px-6 py-4 text-sm text-gray-600 font-medium group-hover:text-indigo-700">
                            {categories.find(c => c.id === p.categoryId)?.name || '-'}
                         </td>
-                        <td className="px-6 py-4 text-sm font-bold text-gray-900">R$ {p.price.toFixed(2)}</td>
+                        <td className="px-6 py-4 text-sm font-bold text-gray-900 group-hover:text-blue-800">R$ {p.price.toFixed(2)}</td>
                         <td className="px-6 py-4 text-sm text-gray-500">
-                          <span className={`px-2 py-1 rounded-full text-xs font-bold ${p.stock > 0 ? 'bg-green-100 text-green-700 border border-green-200' : 'bg-red-100 text-red-700 border border-red-200'}`}>
+                          <span className={`px-2 py-1 rounded-full text-xs font-bold border ${p.stock > 0 ? 'bg-green-100 text-green-700 border-green-200' : 'bg-red-100 text-red-700 border-red-200'}`}>
                             {p.stock} un
                           </span>
                         </td>
                         <td className="px-6 py-4 text-right">
-                           <div className="flex items-center justify-end gap-2">
+                           <div className="flex items-center justify-end gap-2 opacity-80 group-hover:opacity-100 transition-opacity">
                              {/* Botão Clonar */}
                              <button 
                                onClick={() => handleCloneProduct(p)} 
                                title="Clonar Produto"
-                               className="group flex items-center justify-center w-8 h-8 rounded-lg border border-indigo-200 bg-indigo-50 text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
+                               className="group/btn flex items-center justify-center w-8 h-8 rounded-lg border border-indigo-200 bg-white text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all shadow-sm"
                              >
                                <Copy size={16} />
                              </button>
@@ -311,7 +391,7 @@ const AdminCatalog: React.FC = () => {
                              <button 
                                onClick={() => handleOpenModal(p)} 
                                title="Alterar Cadastro"
-                               className="group flex items-center justify-center w-8 h-8 rounded-lg border border-blue-200 bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm"
+                               className="group/btn flex items-center justify-center w-8 h-8 rounded-lg border border-blue-200 bg-white text-blue-600 hover:bg-blue-600 hover:text-white transition-all shadow-sm"
                              >
                                <Edit size={16} />
                              </button>
@@ -320,10 +400,10 @@ const AdminCatalog: React.FC = () => {
                              <button 
                                onClick={() => handleToggleProductStatus(p.id)}
                                title={p.isActive ? "Desativar Produto" : "Ativar Produto"}
-                               className={`group flex items-center justify-center w-8 h-8 rounded-lg border transition-all shadow-sm ${
+                               className={`group/btn flex items-center justify-center w-8 h-8 rounded-lg border transition-all shadow-sm ${
                                  p.isActive 
                                    ? 'border-gray-200 bg-white text-gray-400 hover:bg-red-50 hover:text-red-500 hover:border-red-200' 
-                                   : 'border-green-200 bg-green-50 text-green-600 hover:bg-green-600 hover:text-white'
+                                   : 'border-green-200 bg-white text-green-600 hover:bg-green-600 hover:text-white'
                                }`}
                              >
                                <Power size={16} />
@@ -339,22 +419,22 @@ const AdminCatalog: React.FC = () => {
 
           {/* SERVICES LIST */}
           {activeTab === 'servicos' && (
-             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-xl bg-white">
                 <table className="min-w-full divide-y divide-indigo-100">
-                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
+                  <thead className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Descrição</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Categoria</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Preço Base</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Descrição</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Categoria</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Preço Base</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-white">Ações</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-indigo-50">
                     {services.map(s => (
-                      <tr key={s.id} className="hover:bg-blue-50 transition-colors duration-200">
-                        <td className="px-6 py-4 text-sm font-semibold text-gray-900">{s.description}</td>
-                        <td className="px-6 py-4 text-sm text-gray-600">{s.category}</td>
-                        <td className="px-6 py-4 text-sm font-bold text-gray-900">R$ {s.price.toFixed(2)}</td>
+                      <tr key={s.id} className="transition-all duration-300 group hover:shadow-lg hover:scale-[1.01] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:z-10 relative border-l-4 border-l-transparent hover:border-l-blue-500">
+                        <td className="px-6 py-4 text-sm font-semibold text-gray-900 group-hover:text-blue-800">{s.description}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600 group-hover:text-indigo-700">{s.category}</td>
+                        <td className="px-6 py-4 text-sm font-bold text-gray-900 group-hover:text-blue-800">R$ {s.price.toFixed(2)}</td>
                         <td className="px-6 py-4 text-right">
                            <button onClick={() => handleOpenModal(s)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
                            <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16} /></button>
@@ -368,20 +448,20 @@ const AdminCatalog: React.FC = () => {
 
            {/* BRANDS LIST */}
            {activeTab === 'marcas' && (
-             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-xl bg-white">
                 <table className="min-w-full divide-y divide-indigo-100">
-                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
+                  <thead className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Marca</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Marca</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-white">Ações</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-indigo-50">
                     {brands.map(b => (
-                      <tr key={b.id} className="hover:bg-blue-50 transition-colors duration-200">
+                      <tr key={b.id} className="transition-all duration-300 group hover:shadow-lg hover:scale-[1.01] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:z-10 relative border-l-4 border-l-transparent hover:border-l-blue-500">
                         <td className="px-6 py-4 text-sm font-semibold text-gray-900 flex items-center gap-3">
-                           <img src={b.logo} className="w-8 h-8 rounded object-cover border border-gray-200" alt="" />
-                           {b.name}
+                           <img src={b.logo} className="w-8 h-8 rounded object-cover border border-gray-200 group-hover:scale-110 transition-transform" alt="" />
+                           <span className="group-hover:text-blue-800 transition-colors">{b.name}</span>
                         </td>
                         <td className="px-6 py-4 text-right">
                            <button onClick={() => handleOpenModal(b)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
@@ -396,21 +476,21 @@ const AdminCatalog: React.FC = () => {
 
           {/* CATEGORIES LIST */}
           {activeTab === 'categorias' && (
-             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-xl bg-white">
                 <table className="min-w-full divide-y divide-indigo-100">
-                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
+                  <thead className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Nome</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Subcategorias</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Nome</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Subcategorias</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-white">Ações</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-indigo-50">
                     {categories.map(c => (
-                      <tr key={c.id} className="hover:bg-blue-50 transition-colors duration-200">
-                        <td className="px-6 py-4 text-sm font-semibold text-gray-900">{c.name}</td>
+                      <tr key={c.id} className="transition-all duration-300 group hover:shadow-lg hover:scale-[1.01] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:z-10 relative border-l-4 border-l-transparent hover:border-l-blue-500">
+                        <td className="px-6 py-4 text-sm font-semibold text-gray-900 group-hover:text-blue-800">{c.name}</td>
                         <td className="px-6 py-4 text-sm text-gray-600">
-                          <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-bold">{c.subcategories.length}</span>
+                          <span className="bg-indigo-100 text-indigo-700 px-2 py-1 rounded-full text-xs font-bold group-hover:bg-indigo-200 transition-colors">{c.subcategories.length}</span>
                         </td>
                         <td className="px-6 py-4 text-right">
                            <button onClick={() => handleOpenModal(c)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
@@ -425,20 +505,20 @@ const AdminCatalog: React.FC = () => {
 
           {/* SUB-CATEGORIES LIST */}
           {activeTab === 'subcategorias' && (
-             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-sm">
+             <div className="overflow-x-auto rounded-xl border border-indigo-200 shadow-xl bg-white">
                 <table className="min-w-full divide-y divide-indigo-100">
-                  <thead className="bg-gradient-to-r from-indigo-50 to-blue-50">
+                  <thead className="bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
                     <tr>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Nome</th>
-                      <th className="px-6 py-4 text-left text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Categoria Pai</th>
-                      <th className="px-6 py-4 text-right text-xs font-bold text-indigo-700 uppercase tracking-wider border-b-2 border-indigo-100">Ações</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Nome</th>
+                      <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-white">Categoria Pai</th>
+                      <th className="px-6 py-4 text-right text-xs font-bold uppercase tracking-wider text-white">Ações</th>
                     </tr>
                   </thead>
                   <tbody className="bg-white divide-y divide-indigo-50">
                     {categories.flatMap(c => c.subcategories.map(s => ({...s, parentName: c.name}))).map(sub => (
-                      <tr key={sub.id} className="hover:bg-blue-50 transition-colors duration-200">
-                        <td className="px-6 py-4 text-sm font-semibold text-gray-900">{sub.name}</td>
-                        <td className="px-6 py-4 text-sm text-gray-600">{sub.parentName}</td>
+                      <tr key={sub.id} className="transition-all duration-300 group hover:shadow-lg hover:scale-[1.01] hover:bg-gradient-to-r hover:from-blue-50 hover:to-indigo-50 hover:z-10 relative border-l-4 border-l-transparent hover:border-l-blue-500">
+                        <td className="px-6 py-4 text-sm font-semibold text-gray-900 group-hover:text-blue-800">{sub.name}</td>
+                        <td className="px-6 py-4 text-sm text-gray-600 group-hover:text-indigo-700">{sub.parentName}</td>
                         <td className="px-6 py-4 text-right">
                            <button onClick={() => handleOpenModal(sub)} className="text-indigo-600 hover:text-indigo-900 bg-indigo-50 p-2 rounded-lg mr-2 hover:bg-indigo-100 transition-colors"><Edit size={16} /></button>
                            <button className="text-red-500 hover:text-red-700 bg-red-50 p-2 rounded-lg hover:bg-red-100 transition-colors"><Trash2 size={16} /></button>
@@ -493,8 +573,71 @@ const AdminCatalog: React.FC = () => {
             </div>
           )}
 
+          {/* CONTRACT LIST */}
+          {activeTab === 'contrato' && (
+            <div className="space-y-6">
+               <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                  <h3 className="text-lg font-semibold text-gray-800">Modelos de Contratos e Documentos</h3>
+                  <div className="flex gap-2 w-full md:w-auto">
+                     <input 
+                       type="file" 
+                       accept=".docx" 
+                       ref={fileInputRef} 
+                       className="hidden" 
+                       onChange={handleContractFileUpload} 
+                     />
+                     <button 
+                       onClick={() => fileInputRef.current?.click()}
+                       className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-lg hover:bg-indigo-100 transition-colors"
+                     >
+                       <Upload size={18} /> Importar Modelo (.docx)
+                     </button>
+                     <button 
+                       onClick={() => handleOpenModal()}
+                       className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors shadow-md"
+                     >
+                       <Plus size={18} /> Criar Novo
+                     </button>
+                  </div>
+               </div>
+
+               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {contracts.map(contract => (
+                  <div key={contract.id} className="bg-white rounded-xl border border-indigo-200 p-5 hover:shadow-lg hover:border-blue-300 transition-all group flex flex-col h-full">
+                     <div className="flex items-start justify-between mb-4">
+                        <div className="p-3 bg-blue-50 rounded-lg text-blue-600">
+                          <FileText size={24} />
+                        </div>
+                        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button onClick={() => handleOpenModal(contract)} className="p-2 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg"><Edit size={16} /></button>
+                          <button onClick={() => handleDeleteContract(contract.id)} className="p-2 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg"><Trash2 size={16} /></button>
+                        </div>
+                     </div>
+                     <h3 className="font-bold text-gray-900 mb-2 line-clamp-2">{contract.title}</h3>
+                     <p className="text-xs text-gray-500 mb-4 mt-auto">Última edição: {contract.lastModified}</p>
+                     
+                     <div className="flex gap-2 mt-4 pt-4 border-t border-gray-100">
+                        <button onClick={() => handleOpenModal(contract)} className="flex-1 text-sm bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700">Editar</button>
+                        <button className="flex-1 text-sm border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 flex items-center justify-center gap-1">
+                          <Printer size={14} /> Imprimir
+                        </button>
+                     </div>
+                  </div>
+                ))}
+                
+                {contracts.length === 0 && (
+                  <div className="col-span-full text-center py-16 text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-300">
+                    <FileText size={48} className="mx-auto mb-4 text-gray-300" />
+                    <p>Nenhum modelo de contrato cadastrado.</p>
+                    <p className="text-sm">Importe um arquivo Word ou crie um do zero.</p>
+                  </div>
+                )}
+             </div>
+            </div>
+          )}
+
           {/* OTHER TABS */}
-          {['contrato', 'financeiro'].includes(activeTab) && (
+          {['financeiro'].includes(activeTab) && (
             <div className="text-center py-12 text-gray-500 bg-gray-50 rounded-xl border border-dashed border-gray-300">
               <p className="text-lg font-medium text-gray-700">Módulo em desenvolvimento</p>
               <p className="text-sm mt-1">Clique em "Novo" para testar o modal, se aplicável.</p>
@@ -509,7 +652,7 @@ const AdminCatalog: React.FC = () => {
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
         title={getModalTitle()}
-        size={activeTab === 'produtos' || activeTab === 'servicos' || activeTab === 'checklist' ? '2xl' : 'md'}
+        size={activeTab === 'contrato' || activeTab === 'produtos' || activeTab === 'servicos' || activeTab === 'checklist' ? '2xl' : 'md'}
       >
         
         {/* === PRODUCT FORM IN MODAL === */}
@@ -870,6 +1013,39 @@ const AdminCatalog: React.FC = () => {
                 <button type="button" onClick={saveChecklist} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">Salvar Modelo</button>
              </div>
           </div>
+        )}
+
+        {/* === CONTRACT EDITOR IN MODAL === */}
+        {activeTab === 'contrato' && (
+           <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Título do Modelo</label>
+              <input 
+                type="text" 
+                value={contractForm.title} 
+                onChange={e => setContractForm({...contractForm, title: e.target.value})} 
+                className="w-full bg-gray-50 text-gray-900 border border-gray-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500 font-medium text-lg" 
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Conteúdo do Contrato</label>
+              <RichTextEditor 
+                 content={contractForm.content} 
+                 onChange={(html) => setContractForm({...contractForm, content: html})} 
+              />
+            </div>
+
+            <div className="flex justify-between items-center pt-4 border-t border-gray-100">
+              <span className="text-xs text-gray-500">
+                Dica: Você pode importar arquivos .docx usando o botão na tela anterior.
+              </span>
+              <div className="flex gap-3">
+                 <button type="button" onClick={() => setIsModalOpen(false)} className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50">Cancelar</button>
+                 <button type="button" onClick={handleSaveContract} className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-bold shadow-md">Salvar Modelo</button>
+              </div>
+            </div>
+         </div>
         )}
 
       </Modal>
