@@ -2,15 +2,15 @@ import React, { useState } from 'react';
 import { Calendar, Package, MapPin, RotateCcw, Filter, Download, MoreVertical } from 'lucide-react';
 
 const AdminDashboard: React.FC = () => {
-    const [dateRange, setDateRange] = useState('Last 30 Days');
-    const [category, setCategory] = useState('All Categories');
-    const [region, setRegion] = useState('All Regions');
+    const [dateRange, setDateRange] = useState('Últimos 30 dias');
+    const [category, setCategory] = useState('Todas as Categorias');
+    const [region, setRegion] = useState('Todas as Regiões');
 
     return (
         <div className="min-h-screen bg-slate-950 text-white">
             {/* Header */}
             <div className="mb-8">
-                <h1 className="text-2xl font-bold mb-6">Sales & Performance Overview</h1>
+                <h1 className="text-2xl font-bold mb-6">Visão Geral de Vendas e Desempenho</h1>
 
                 {/* Filters */}
                 <div className="flex flex-wrap items-center gap-4 mb-6">
@@ -64,19 +64,19 @@ const AdminDashboard: React.FC = () => {
                     {/* Reset Button */}
                     <button className="flex items-center gap-2 bg-slate-900 rounded-lg px-4 py-2.5 border border-slate-800 hover:bg-slate-800 transition-colors">
                         <RotateCcw size={18} />
-                        <span className="text-sm">Reset</span>
+                        <span className="text-sm">Resetar</span>
                     </button>
 
                     {/* Apply Button */}
                     <button className="flex items-center gap-2 bg-blue-600 rounded-lg px-4 py-2.5 hover:bg-blue-700 transition-colors">
                         <Filter size={18} />
-                        <span className="text-sm font-medium">Apply</span>
+                        <span className="text-sm font-medium">Aplicar</span>
                     </button>
 
                     {/* Export Button */}
                     <button className="flex items-center gap-2 bg-slate-900 rounded-lg px-4 py-2.5 border border-slate-800 hover:bg-slate-800 transition-colors ml-auto">
                         <Download size={18} />
-                        <span className="text-sm">Export</span>
+                        <span className="text-sm">Exportar</span>
                     </button>
                 </div>
             </div>
@@ -85,22 +85,22 @@ const AdminDashboard: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 {/* Total Sales */}
                 <div className="bg-slate-900 rounded-xl p-6 border border-slate-800">
-                    <div className="text-slate-400 text-sm mb-2">Total Sales</div>
-                    <div className="text-3xl font-bold mb-1">$124,560</div>
+                    <div className="text-slate-400 text-sm mb-2">Vendas Totais</div>
+                    <div className="text-3xl font-bold mb-1">R$ 124.560</div>
                     <div className="text-green-500 text-sm">+1.2%</div>
                 </div>
 
                 {/* Conversion Rate */}
                 <div className="bg-slate-900 rounded-xl p-6 border border-slate-800">
-                    <div className="text-slate-400 text-sm mb-2">Conversion Rate</div>
+                    <div className="text-slate-400 text-sm mb-2">Taxa de Conversão</div>
                     <div className="text-3xl font-bold mb-1">12.5%</div>
                     <div className="text-red-500 text-sm">-0.5%</div>
                 </div>
 
                 {/* Average Order Value */}
                 <div className="bg-slate-900 rounded-xl p-6 border border-slate-800">
-                    <div className="text-slate-400 text-sm mb-2">Average Order Value</div>
-                    <div className="text-3xl font-bold mb-1">$256.70</div>
+                    <div className="text-slate-400 text-sm mb-2">Valor Médio do Pedido</div>
+                    <div className="text-3xl font-bold mb-1">R$ 256,70</div>
                     <div className="text-green-500 text-sm">+2.1%</div>
                 </div>
             </div>
@@ -111,8 +111,8 @@ const AdminDashboard: React.FC = () => {
                 <div className="bg-slate-900 rounded-xl p-6 border border-slate-800">
                     <div className="flex items-start justify-between mb-6">
                         <div>
-                            <h3 className="text-lg font-semibold mb-1">Revenue by Product Category</h3>
-                            <p className="text-slate-400 text-sm">Last 30 Days</p>
+                            <h3 className="text-lg font-semibold mb-1">Receita por Categoria de Produto</h3>
+                            <p className="text-slate-400 text-sm">Últimos 30 Dias</p>
                         </div>
                         <button className="text-slate-400 hover:text-white transition-colors">
                             <MoreVertical size={20} />
@@ -169,8 +169,8 @@ const AdminDashboard: React.FC = () => {
                                 />
                             </svg>
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
-                                <div className="text-slate-400 text-xs">Total Revenue</div>
-                                <div className="text-2xl font-bold">$58,230</div>
+                                <div className="text-slate-400 text-xs">Receita Total</div>
+                                <div className="text-2xl font-bold">R$ 58.230</div>
                             </div>
                         </div>
 
@@ -178,22 +178,22 @@ const AdminDashboard: React.FC = () => {
                         <div className="space-y-3">
                             <div className="flex items-center gap-3">
                                 <div className="w-3 h-3 rounded-full bg-cyan-500"></div>
-                                <span className="text-sm text-slate-300">Electronics</span>
+                                <span className="text-sm text-slate-300">Eletrônicos</span>
                                 <span className="text-sm font-semibold ml-auto">40%</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                                <span className="text-sm text-slate-300">Apparel</span>
+                                <span className="text-sm text-slate-300">Vestuário</span>
                                 <span className="text-sm font-semibold ml-auto">30%</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <div className="w-3 h-3 rounded-full bg-teal-500"></div>
-                                <span className="text-sm text-slate-300">Home Goods</span>
+                                <span className="text-sm text-slate-300">Bens de Casa</span>
                                 <span className="text-sm font-semibold ml-auto">20%</span>
                             </div>
                             <div className="flex items-center gap-3">
                                 <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                                <span className="text-sm text-slate-300">Books</span>
+                                <span className="text-sm text-slate-300">Livros</span>
                                 <span className="text-sm font-semibold ml-auto">10%</span>
                             </div>
                         </div>
@@ -203,12 +203,12 @@ const AdminDashboard: React.FC = () => {
                 {/* Daily Site Traffic */}
                 <div className="bg-slate-900 rounded-xl p-6 border border-slate-800">
                     <div className="mb-6">
-                        <h3 className="text-lg font-semibold mb-1">Daily Site Traffic</h3>
+                        <h3 className="text-lg font-semibold mb-1">Tráfego Diário do Site</h3>
                         <div className="flex items-baseline gap-2">
-                            <span className="text-3xl font-bold">1.2M Visitors</span>
+                            <span className="text-3xl font-bold">1,2M Visitantes</span>
                         </div>
                         <div className="flex items-center gap-2 mt-1">
-                            <span className="text-slate-400 text-sm">Last 30 Days</span>
+                            <span className="text-slate-400 text-sm">Últimos 30 Dias</span>
                             <span className="text-red-500 text-sm">-1.8%</span>
                         </div>
                     </div>
@@ -246,12 +246,12 @@ const AdminDashboard: React.FC = () => {
             {/* Monthly New Users */}
             <div className="bg-slate-900 rounded-xl p-6 border border-slate-800">
                 <div className="mb-4">
-                    <h3 className="text-lg font-semibold mb-1">Monthly New Users</h3>
+                    <h3 className="text-lg font-semibold mb-1">Novos Usuários Mensais</h3>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold">1,500</span>
+                        <span className="text-3xl font-bold">1.500</span>
                     </div>
                     <div className="flex items-center gap-2 mt-1">
-                        <span className="text-slate-400 text-sm">Last 6 Months</span>
+                        <span className="text-slate-400 text-sm">Últimos 6 Meses</span>
                         <span className="text-red-500 text-sm">-0.2%</span>
                     </div>
                 </div>
