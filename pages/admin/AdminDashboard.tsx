@@ -1,10 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Calendar, Package, MapPin, RotateCcw, Filter, Download, MoreVertical } from 'lucide-react';
+import { calculateDashboardMetrics, formatCurrency, formatNumber, formatPercentage } from '../utils/dashboardMetrics';
 
 const AdminDashboard: React.FC = () => {
     const [dateRange, setDateRange] = useState('Últimos 30 dias');
     const [category, setCategory] = useState('Todas as Categorias');
     const [region, setRegion] = useState('Todas as Regiões');
+    const [metrics, setMetrics] = useState(calculateDashboardMetrics());
+
+    useEffect(() => {
+        // Recalcular métricas quando filtros mudarem
+        setMetrics(calculateDashboardMetrics());
+    }, [dateRange, category, region]);
 
     return (
         <div className="min-h-screen bg-slate-950 text-white">
@@ -86,22 +93,28 @@ const AdminDashboard: React.FC = () => {
                 {/* Total Sales */}
                 <div className="bg-slate-900 rounded-xl p-6 border border-slate-800">
                     <div className="text-slate-400 text-sm mb-2">Vendas Totais</div>
-                    <div className="text-3xl font-bold mb-1">R$ 124.560</div>
-                    <div className="text-green-500 text-sm">+1.2%</div>
+                    <div className="text-3xl font-bold mb-1">{formatCurrency(metrics.totalSales)}</div>
+                    <div className={`text-sm ${metrics.salesGrowth >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                        {formatPercentage(metrics.salesGrowth)}
+                    </div>
                 </div>
 
                 {/* Conversion Rate */}
                 <div className="bg-slate-900 rounded-xl p-6 border border-slate-800">
                     <div className="text-slate-400 text-sm mb-2">Taxa de Conversão</div>
-                    <div className="text-3xl font-bold mb-1">12.5%</div>
-                    <div className="text-red-500 text-sm">-0.5%</div>
+                    <div className="text-3xl font-bold mb-1">{metrics.conversionRate.toFixed(1)}%</div>
+                    <div className={`text-sm ${metrics.conversionGrowth >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                        {formatPercentage(metrics.conversionGrowth)}
+                    </div>
                 </div>
 
                 {/* Average Order Value */}
                 <div className="bg-slate-900 rounded-xl p-6 border border-slate-800">
                     <div className="text-slate-400 text-sm mb-2">Valor Médio do Pedido</div>
-                    <div className="text-3xl font-bold mb-1">R$ 256,70</div>
-                    <div className="text-green-500 text-sm">+2.1%</div>
+                    <div className="text-3xl font-bold mb-1">{formatCurrency(metrics.averageOrderValue)}</div>
+                    <div className={`text-sm ${metrics.avgOrderGrowth >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                        {formatPercentage(metrics.avgOrderGrowth)}
+                    </div>
                 </div>
             </div>
 
@@ -170,32 +183,22 @@ const AdminDashboard: React.FC = () => {
                             </svg>
                             <div className="absolute inset-0 flex flex-col items-center justify-center">
                                 <div className="text-slate-400 text-xs">Receita Total</div>
-                                <div className="text-2xl font-bold">R$ 58.230</div>
+                                <div className="text-2xl font-bold">{formatCurrency(metrics.totalRevenue)}</div>
                             </div>
                         </div>
 
                         {/* Legend */}
                         <div className="space-y-3">
-                            <div className="flex items-center gap-3">
-                                <div className="w-3 h-3 rounded-full bg-cyan-500"></div>
-                                <span className="text-sm text-slate-300">Eletrônicos</span>
-                                <span className="text-sm font-semibold ml-auto">40%</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                                <span className="text-sm text-slate-300">Vestuário</span>
-                                <span className="text-sm font-semibold ml-auto">30%</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <div className="w-3 h-3 rounded-full bg-teal-500"></div>
-                                <span className="text-sm text-slate-300">Bens de Casa</span>
-                                <span className="text-sm font-semibold ml-auto">20%</span>
-                            </div>
-                            <div className="flex items-center gap-3">
-                                <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                                <span className="text-sm text-slate-300">Livros</span>
-                                <span className="text-sm font-semibold ml-auto">10%</span>
-                            </div>
+                            {metrics.categoryPercentages.slice(0, 4).map((cat: { name: string; percentage: number }, index: number) => {
+                                const colors = ['bg-cyan-500', 'bg-purple-500', 'bg-teal-500', 'bg-orange-500'];
+                                return (
+                                    <div key={cat.name} className="flex items-center gap-3">
+                                        <div className={`w-3 h-3 rounded-full ${colors[index]}`}></div>
+                                        <span className="text-sm text-slate-300">{cat.name}</span>
+                                        <span className="text-sm font-semibold ml-auto">{cat.percentage.toFixed(0)}%</span>
+                                    </div>
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
@@ -205,7 +208,7 @@ const AdminDashboard: React.FC = () => {
                     <div className="mb-6">
                         <h3 className="text-lg font-semibold mb-1">Tráfego Diário do Site</h3>
                         <div className="flex items-baseline gap-2">
-                            <span className="text-3xl font-bold">1,2M Visitantes</span>
+                            <span className="text-3xl font-bold">{formatNumber(metrics.totalVisitors)} Visitantes</span>
                         </div>
                         <div className="flex items-center gap-2 mt-1">
                             <span className="text-slate-400 text-sm">Últimos 30 Dias</span>
@@ -248,7 +251,7 @@ const AdminDashboard: React.FC = () => {
                 <div className="mb-4">
                     <h3 className="text-lg font-semibold mb-1">Novos Usuários Mensais</h3>
                     <div className="flex items-baseline gap-2">
-                        <span className="text-3xl font-bold">1.500</span>
+                        <span className="text-3xl font-bold">{formatNumber(metrics.monthlyNewUsers[metrics.monthlyNewUsers.length - 1].users)}</span>
                     </div>
                     <div className="flex items-center gap-2 mt-1">
                         <span className="text-slate-400 text-sm">Últimos 6 Meses</span>
