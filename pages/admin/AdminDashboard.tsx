@@ -22,10 +22,10 @@ const AdminDashboard: React.FC = () => {
                             onChange={(e) => setDateRange(e.target.value)}
                             className="bg-transparent text-white text-sm outline-none cursor-pointer"
                         >
-                            <option value="Last 7 Days">Last 7 Days</option>
-                            <option value="Last 30 Days">Last 30 Days</option>
-                            <option value="Last 90 Days">Last 90 Days</option>
-                            <option value="Last Year">Last Year</option>
+                            <option value="Last 7 Days">Últimos 7 dias</option>
+                            <option value="Last 30 Days">Últimos 30 dias</option>
+                            <option value="Last 90 Days">Últimos 90 dias</option>
+                            <option value="Last Year">Último Ano</option>
                         </select>
                     </div>
 
@@ -37,11 +37,11 @@ const AdminDashboard: React.FC = () => {
                             onChange={(e) => setCategory(e.target.value)}
                             className="bg-transparent text-white text-sm outline-none cursor-pointer"
                         >
-                            <option value="All Categories">All Categories</option>
-                            <option value="Electronics">Electronics</option>
-                            <option value="Apparel">Apparel</option>
-                            <option value="Home Goods">Home Goods</option>
-                            <option value="Books">Books</option>
+                            <option value="All Categories">Todas as Categorias</option>
+                            <option value="Electronics">Eletrônicos</option>
+                            <option value="Apparel">Vestuário</option>
+                            <option value="Home Goods">Bens de Casa</option>
+                            <option value="Books">Livros</option>
                         </select>
                     </div>
 
@@ -53,11 +53,11 @@ const AdminDashboard: React.FC = () => {
                             onChange={(e) => setRegion(e.target.value)}
                             className="bg-transparent text-white text-sm outline-none cursor-pointer"
                         >
-                            <option value="All Regions">All Regions</option>
-                            <option value="North">North</option>
-                            <option value="South">South</option>
-                            <option value="East">East</option>
-                            <option value="West">West</option>
+                            <option value="All Regions">Todas as Regiões</option>
+                            <option value="North">Norte</option>
+                            <option value="South">Sul</option>
+                            <option value="East">Leste</option>
+                            <option value="West">Oeste</option>
                         </select>
                     </div>
 
