@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Package, MapPin, RotateCcw, Filter, Download, MoreVertical } from 'lucide-react';
-import { calculateDashboardMetrics, formatCurrency, formatNumber, formatPercentage } from '../utils/dashboardMetrics';
+import { calculateDashboardMetrics, formatCurrency, formatNumber, formatPercentage } from '../../utils/dashboardMetrics';
 
 const AdminDashboard: React.FC = () => {
     const [dateRange, setDateRange] = useState('Últimos 30 dias');
